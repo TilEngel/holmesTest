@@ -1,5 +1,6 @@
 import Database.JDBCEngine;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Main {
@@ -13,7 +14,5 @@ public class Main {
         } catch (SQLException e){
             System.out.println("[ERR] Fehler in Main: "+ e.getMessage());
         }
-
-
     }
 }
