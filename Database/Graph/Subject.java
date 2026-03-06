@@ -5,6 +5,13 @@ public class Subject extends Node{
 
     private String cmd;
 
+
+    public Subject (long uuid, long nodeIndex, String path, String cmd){
+        super(uuid, nodeIndex);
+        setPath(path);
+        setCmd(cmd);
+    }
+
     public void setPath(String path){
         this.path = path;
     }

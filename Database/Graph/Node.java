@@ -1,8 +1,13 @@
 package Database.Graph;
 
-abstract class Node {
+public abstract class Node {
     private long uuid;
     private long nodeIndex;
+
+    public Node(long uuid, long nodeIndex) {
+        setNodeIndex(nodeIndex);
+        setUuid(uuid);
+    }
 
     public void setUuid(long uuid){
         this.uuid = uuid;
