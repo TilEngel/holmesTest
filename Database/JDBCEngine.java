@@ -67,14 +67,14 @@ public class JDBCEngine {
      * @param nodeType Tabelle aus der alle Knoten geliefert werden sollen (Wertebereich [1,3])
      * @return Liste aller relevanten Entitäten
      */
-    public List<Map<String, Object>> getAllNodes(short nodeType) {
+    public List<Map<String, Object>> getAllNodes(char nodeType) {
         //Richtige Tabelle wählen
         String table;
-        if(nodeType ==1) {
+        if(nodeType =='1') {
             table = "subject_node_id";
-        } else if(nodeType ==2){
+        } else if(nodeType =='2'){
             table = "file_node_table";
-        } else if(nodeType == 3) {
+        } else if(nodeType == '3') {
             table = "netflow_node_table";
         } else{
             System.out.println("[WARN] In ungültiger Tabelle nach Knoten gesucht");
