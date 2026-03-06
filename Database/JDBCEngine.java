@@ -2,6 +2,7 @@ package Database;
 import java.sql.*;
 import java.util.*;
 public class JDBCEngine {
+    //Zugangsdaten für die Datenbank
     private static final String DB_HOST = "localhost";
     private static final String DB_PORT = "9999";
     private static final String DB_NAME = "cadets_e3";
@@ -11,6 +12,8 @@ public class JDBCEngine {
     private static final String JDBC_URL = "jdbc:postgresql://" + DB_HOST + ":"+ DB_PORT + "/"+ DB_NAME;
 
     private Connection connection;
+
+    private static final String TIMESTAMP_THRESH = "1522707048083354249";
 
 
     public void connect() throws SQLException {
@@ -38,7 +41,7 @@ public class JDBCEngine {
     }
 
     public void getAllEvents() throws SQLException {
-        String sql = "SELECT * FROM event_table WHERE timestamp_rec <= 1522707048083354249";
+        String sql = "SELECT * FROM event_table WHERE timestamp_rec <= "+ TIMESTAMP_THRESH;
         try(Statement stmt = getConnection().createStatement()){
             try(ResultSet rs = stmt.executeQuery(sql)) {
                 while(rs.next()){

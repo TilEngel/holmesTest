@@ -9,6 +9,7 @@ public class Main {
         try{
             engine.connect();
             engine.getAllEvents();
+            engine.disconnect();
         } catch (SQLException e){
             System.out.println("[ERR] Fehler in Main: "+ e.getMessage());
         }
