@@ -9,7 +9,8 @@ public class Main {
         JDBCEngine engine = new JDBCEngine();
         try{
             engine.connect();
-            engine.getAllEvents();
+            ProvGraphBuilder builder = new ProvGraphBuilder(engine);
+            builder.collectData();
             engine.disconnect();
         } catch (SQLException e){
             System.out.println("[ERR] Fehler in Main: "+ e.getMessage());

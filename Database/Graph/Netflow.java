@@ -9,7 +9,7 @@ public class Netflow extends Node{
 
     private String dstPort;
 
-    public Netflow(long uuid, long nodeIndex, String srcAddr, String srcPort, String dstAddr, String dstPort){
+    public Netflow(String uuid, long nodeIndex, String srcAddr, String srcPort, String dstAddr, String dstPort){
         super(uuid, nodeIndex);
         setSrcAddr(srcAddr);
         setSrcPort(srcPort);
@@ -45,3 +45,4 @@ public class Netflow extends Node{
     }
 
 }
+
