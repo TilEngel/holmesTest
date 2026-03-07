@@ -67,25 +67,25 @@ public class JDBCEngine {
      * @param nodeType Tabelle aus der alle Knoten geliefert werden sollen (Wertebereich [1,3])
      * @return Liste aller relevanten Entitäten
      */
-    public List<Map<String, Object>> getAllNodes(short nodeType) {
+    public List<Map<String, Object>> getAllNodes(char nodeType) {
         //Richtige Tabelle wählen
         String table;
-        if(nodeType ==1) {
-            table = "subject_node_id";
-        } else if(nodeType ==2){
+        if(nodeType =='1') {
+            table = "subject_node_table";
+        } else if(nodeType =='2'){
             table = "file_node_table";
-        } else if(nodeType == 3) {
+        } else if(nodeType == '3') {
             table = "netflow_node_table";
         } else{
             System.out.println("[WARN] In ungültiger Tabelle nach Knoten gesucht");
             return null;
         }
         //Query: Alle Subjekte, die an Events vor TIMESTAMP_THRESH beteiligt sind
-        String sql = "SELECT DISTINCT s.* "+
-                "FROM " + table +  " s "+
-                "JOIN event_table e ON s.node_uuid = e.src_node "+
-                "OR s.node_uuid = e.dst_node "+
-                "WHERE e.timestamp_rec <="+ TIMESTAMP_THRESH;
+        String sql = "SELECT DISTINCT x.* "+
+                "FROM " + table +  " x "+
+                "WHERE x.hash_id IN ( "+
+                    "SELECT src_node FROM event_table WHERE timestamp_rec<= "+ TIMESTAMP_THRESH +
+                    " UNION SELECT dst_node FROM event_table WHERE timestamp_rec<= "+ TIMESTAMP_THRESH+ ")";
 
         List<Map<String,Object>> rows = new ArrayList<>();
         try(Statement stmt = getConnection().createStatement()) {
@@ -107,6 +107,7 @@ public class JDBCEngine {
         } catch (SQLException e) {
             System.err.println("[ERR] getAllSubjectNodes: " + e.getMessage());
         }
+        System.out.println("[INFO] getAllNodes beendet. NodeType: "+nodeType);
         return rows;
     }
 

@@ -9,6 +9,14 @@ public class Netflow extends Node{
 
     private String dstPort;
 
+    public Netflow(String uuid, long nodeIndex, String srcAddr, String srcPort, String dstAddr, String dstPort){
+        super(uuid, nodeIndex);
+        setSrcAddr(srcAddr);
+        setSrcPort(srcPort);
+        setDstAddr(dstAddr);
+        setDstPort(dstPort);
+    }
+
     public void setSrcAddr(String srcAddr){
         this.srcAddr= srcAddr;
     }
@@ -37,3 +45,4 @@ public class Netflow extends Node{
     }
 
 }
+

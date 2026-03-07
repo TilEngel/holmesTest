@@ -13,6 +13,15 @@ public class Edge {
 
     private long id;
 
+    public Edge(Node srcNode, String operation, Node dstNode, String eventUuid, String timestampRec, long id){
+        setSrcNode(srcNode);
+        setOperation(operation);
+        setDstNode(dstNode);
+        setEventUuid(eventUuid);
+        setTimestampRec(timestampRec);
+        setId(id);
+    }
+
     //Setter
     public void setSrcNode(Node srcNode){
         this.srcNode = srcNode;
