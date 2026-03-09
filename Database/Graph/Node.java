@@ -4,9 +4,12 @@ public abstract class Node {
     private String uuid;
     private long nodeIndex;
 
-    public Node(String uuid, long nodeIndex) {
+    private String hashId;
+
+    public Node(String uuid, long nodeIndex, String hashId) {
         setNodeIndex(nodeIndex);
         setUuid(uuid);
+        setHashId(hashId);
     }
 
     public void setUuid(String uuid){
@@ -21,6 +24,14 @@ public abstract class Node {
 
     public long getNodeIndex() {
         return nodeIndex;
+    }
+
+    public void setHashId(String hashId){
+        this.hashId= hashId;
+    }
+
+    public String getHashId(){
+        return hashId;
     }
 
     public abstract String getName();
