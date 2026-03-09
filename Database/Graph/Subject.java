@@ -12,6 +12,11 @@ public class Subject extends Node{
         setCmd(cmd);
     }
 
+    @Override
+    public String getName(){
+        return "(Sub) "+ getCmd();
+    }
+
     public void setPath(String path){
         this.path = path;
     }

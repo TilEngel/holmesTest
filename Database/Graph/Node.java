@@ -22,4 +22,6 @@ public abstract class Node {
     public long getNodeIndex() {
         return nodeIndex;
     }
+
+    public abstract String getName();
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 public class ProvGraphBuilder {
     //Engine, um Daten aus der Datenbank zu holen
     private static JDBCEngine engine;
-    //Mapping UUID->Node-Objekt ermöglicht Zugriff in O(1)
+    //Mapping Hash_ID->Node-Objekt ermöglicht Zugriff in O(1)
     private final Map<String,Node> nodeIndex = new HashMap<>();
     //Listen, in denen Knoten und Kanten gespeichert werden
     private final List<Node> nodes = new ArrayList<>();
@@ -120,6 +120,14 @@ public class ProvGraphBuilder {
             edges.add(e);
         }
         System.out.println("[INFO] Edges geladen: "+edges.size()+ " | skipped: "+ skipped);
+    }
+
+    public void printEdges() {
+        for(Edge e : edges) {
+            String srcNode = "| "+e.getSrcNode().getName()+ " |";
+            String dstNode = "| " + e.getDstNode().getName()+ " |";
+            System.out.println(srcNode + " ---" + e.getOperation() + "---> " + dstNode);
+        }
     }
 
 
