@@ -17,6 +17,11 @@ public class Netflow extends Node{
         setDstPort(dstPort);
     }
 
+    @Override
+    public String getName(){
+        return "(Net) "+ getSrcPort();
+    }
+
     public void setSrcAddr(String srcAddr){
         this.srcAddr= srcAddr;
     }

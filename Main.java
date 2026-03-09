@@ -11,6 +11,7 @@ public class Main {
             engine.connect();
             ProvGraphBuilder builder = new ProvGraphBuilder(engine);
             builder.collectData();
+            builder.printEdges();
             engine.disconnect();
         } catch (SQLException e){
             System.out.println("[ERR] Fehler in Main: "+ e.getMessage());

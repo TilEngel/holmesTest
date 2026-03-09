@@ -9,6 +9,11 @@ public class File extends Node{
         setPath(path);
     }
 
+    @Override
+    public String getName(){
+        return "(File) "+ getPath();
+    }
+
     public void setPath(String path) {
         this.path = path;
     }

@@ -43,22 +43,22 @@ public class Edge {
     }
 
     //Getter
-    Node getSrcNode(){
+    public Node getSrcNode(){
         return srcNode;
     }
-    String getOperation(){
+    public String getOperation(){
         return operation;
     }
-    Node getDstNode(){
+    public Node getDstNode(){
         return dstNode;
     }
-    String getEventUuid(){
+    public String getEventUuid(){
         return eventUuid;
     }
-    String getTimestampRec(){
+    public String getTimestampRec(){
         return timestampRec;
     }
-    long getId(){
+    public long getId(){
         return id;
     }
 
