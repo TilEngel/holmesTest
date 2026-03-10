@@ -4,6 +4,7 @@ import Database.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ProvGraphBuilder {
     //Engine, um Daten aus der Datenbank zu holen
@@ -55,6 +56,9 @@ public class ProvGraphBuilder {
             String uuid = (String) row.get("node_uuid");
             long nodeIndex = toLong(row.get("index_id"));
             String path = (String) row.get("path");
+            if(path == null){
+                path = "[unknown]";
+            }
             String hashId = (String) row.get("hash_id");
 
             File f = new File(uuid, nodeIndex,hashId,path);
@@ -120,10 +124,8 @@ public class ProvGraphBuilder {
 
 
     public void printEdges() {
-        for(Edge e : graph.getEdges() ){
-            String srcNode = "| "+e.getSrcNode().getName()+ " |";
-            String dstNode = "| " + e.getDstNode().getName()+ " |";
-            System.out.println(srcNode + " ---" + e.getOperation() + "---> " + dstNode + " TIME: "+ e.getTimestampRec() );
+        for(String hash : nodeIndex.keySet()){
+            graph.traverseForwardFrom(hash);
         }
     }
 

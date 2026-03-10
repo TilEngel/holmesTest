@@ -2,6 +2,7 @@ import Database.Graph.Edge;
 import Database.Graph.Node;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class ProvGraph {
     private final Map<String, Node> nodes = new HashMap<>();
@@ -39,6 +40,7 @@ public class ProvGraph {
     public Set<Node> traverseForwardFrom(String startHashId){
         Set<Node> visited = new LinkedHashSet<>();
         Queue<String> queue = new LinkedList<>();
+        int count=0;
 
         queue.add(startHashId);
         while(!queue.isEmpty()){
@@ -54,11 +56,51 @@ public class ProvGraph {
                 //Falls erster Besuch hinzufügen
                 if(!visited.contains(nodes.get(dstId))){
                     queue.add(dstId);
+                    count++;
+                }
+            }
+        }
+        System.out.println("Von Knoten " + getNode(startHashId).getName() + " können " + count +" Knoten erreicht werden");
+        return visited;
+        /*
+         * Schauen in Paper, wie traversiert werden muss (auch rückwärts?)
+         * Test Methode, die traversierung nutzt
+         */
+    }
+
+    /**
+     * Traversierung mit Filterung anhand von Edge-Eigenschaften
+     * @param startHashId ID des Knotens an dem gestartet wird
+     * @param edgeFilter Liste an Filtern
+     * @return Liste aller Knoten, die mit Bedingungen erreicht werden können
+     */
+    public Set<Node> traverseForwardFilter(String startHashId, Predicate<Edge> edgeFilter){
+        Set<Node> visited = new LinkedHashSet<>();
+        Queue<String> queue = new LinkedList<>();
+
+        queue.add(startHashId);
+
+        while(!queue.isEmpty()){
+            String curId = queue.poll();
+            Node curNode = nodes.get(curId);
+            if(visited.contains(curNode)){
+                continue;
+            }
+            visited.add(curNode);
+
+            for (Edge e: getOutEdges(curId)){
+                if(!edgeFilter.test(e)){
+                    continue;
+                }
+                String dstId = e.getDstNode().getHashId();
+                if(!visited.contains(nodes.get(dstId))){
+                    queue.add(dstId);
                 }
             }
         }
         return visited;
     }
+
     /**
      * Vorwärts Traversierung.
      * @param hashId id des Knotens
