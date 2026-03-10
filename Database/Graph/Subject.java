@@ -6,8 +6,8 @@ public class Subject extends Node{
     private String cmd;
 
 
-    public Subject (String uuid, long nodeIndex, String path, String cmd){
-        super(uuid, nodeIndex);
+    public Subject (String uuid, long nodeIndex,String hashId, String path, String cmd){
+        super(uuid, nodeIndex,hashId);
         setPath(path);
         setCmd(cmd);
     }

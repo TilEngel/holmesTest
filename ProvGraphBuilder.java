@@ -1,19 +1,18 @@
 import Database.Graph.*;
 import Database.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ProvGraphBuilder {
     //Engine, um Daten aus der Datenbank zu holen
     private static JDBCEngine engine;
     //Mapping Hash_ID->Node-Objekt ermöglicht Zugriff in O(1)
     private final Map<String,Node> nodeIndex = new HashMap<>();
-    //Listen, in denen Knoten und Kanten gespeichert werden
-    private final List<Node> nodes = new ArrayList<>();
-    private final List<Edge> edges = new ArrayList<>();
+
+    private final ProvGraph graph = new ProvGraph();
 
 
     public ProvGraphBuilder(JDBCEngine engine){
@@ -41,11 +40,10 @@ public class ProvGraphBuilder {
             String cmd = (String) row.get("cmd");
             String hashId = (String) row.get("hash_id");
 
-            Subject s = new Subject(uuid, nodeIndex,path,cmd);
-            nodes.add(s);
+            Subject s = new Subject(uuid, nodeIndex,hashId,path,cmd);
             this.nodeIndex.put(hashId,s);
+            graph.addNode(s);
         }
-        System.out.println("[INFO] Subjects geladen: " + nodes.size());
 
     }
 
@@ -58,13 +56,15 @@ public class ProvGraphBuilder {
             String uuid = (String) row.get("node_uuid");
             long nodeIndex = toLong(row.get("index_id"));
             String path = (String) row.get("path");
+            if(path == null){
+                path = "[unknown]";
+            }
             String hashId = (String) row.get("hash_id");
 
-            File f = new File(uuid, nodeIndex,path);
-            nodes.add(f);
+            File f = new File(uuid, nodeIndex,hashId,path);
             this.nodeIndex.put(hashId,f);
+            graph.addNode(f);
         }
-        System.out.println("[INFO] Files geladen: "+ nodes.size());
 
     }
 
@@ -83,11 +83,10 @@ public class ProvGraphBuilder {
             String dstPort = (String)row.get("dst_port");
             String hashId = (String) row.get("hash_id");
 
-            Netflow n = new Netflow(uuid, nodeIndex, srcAddr,srcPort,dstAddr,dstPort);
-            nodes.add(n);
+            Netflow n = new Netflow(uuid, nodeIndex, hashId, srcAddr,srcPort,dstAddr,dstPort);
             this.nodeIndex.put(hashId,n);
+            graph.addNode(n);
         }
-        System.out.println("[INFO] Netflows geladen: "+nodes.size());
 
     }
 
@@ -117,22 +116,22 @@ public class ProvGraphBuilder {
             long id = toLong(row.get("_id"));
 
             Edge e = new Edge(srcNode,operation,dstNode,eventUuid,timestamp,id);
-            edges.add(e);
+
+            graph.addEdge(e);
         }
-        System.out.println("[INFO] Edges geladen: "+edges.size()+ " | skipped: "+ skipped);
+        System.out.println("[INFO] Edges geladen  | skipped: "+ skipped);
     }
+
 
     public void printEdges() {
-        for(Edge e : edges) {
-            String srcNode = "| "+e.getSrcNode().getName()+ " |";
-            String dstNode = "| " + e.getDstNode().getName()+ " |";
-            System.out.println(srcNode + " ---" + e.getOperation() + "---> " + dstNode);
+        for(String hash : nodeIndex.keySet()){
+            graph.traverseForwardFrom(hash);
         }
     }
 
 
-    public void setEngine(JDBCEngine engine){
-        this.engine = engine;
+    public void setEngine(JDBCEngine jdbcEngine){
+        engine = jdbcEngine;
     }
 
     /*

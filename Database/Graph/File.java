@@ -4,8 +4,8 @@ public class File extends Node{
 
     private String path;
 
-    public File(String uuid, long nodeIndex, String path){
-        super(uuid,nodeIndex);
+    public File(String uuid, long nodeIndex,String hashId, String path){
+        super(uuid,nodeIndex,hashId);
         setPath(path);
     }
 
