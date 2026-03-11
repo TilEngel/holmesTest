@@ -16,6 +16,9 @@ public abstract class TTP {
 
     public abstract boolean matches(Edge edge, ProvGraph graph);
 
+    //vllt. unnötig, gibt Klassennahmen zurück
+    public abstract String getName();
+
     protected boolean prerequisitesMet(Node node, ProvGraph graph ){
         for(Prerequisite p : prerequisites){
             if(!p.evaluate(node, graph)){
