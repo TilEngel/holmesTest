@@ -1,4 +1,21 @@
 package Events;
 
 public interface EventType {
+    enum Type{
+        EVENT_CLOSE ,
+        EVENT_OPEN ,
+        EVENT_READ ,
+        EVENT_WRITE ,
+        EVENT_EXIT ,
+        EVENT_FORK ,
+        EVENT_EXECUTE ,
+
+        EVENT_CONNECT ,
+        EVENT_ACCEPT ,
+        EVENT_CREATE_OBJECT ,
+        EVENT_LSEEK ,
+        EVENT_MMAP ,
+        EVENT_MODIFY_PROCESS ,
+        EVENT_CHANGE_PRINCIPAL ,
+    }
 }

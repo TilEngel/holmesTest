@@ -1,5 +1,8 @@
+package ProvenanceGraph;
+
 import Database.Graph.Edge;
 import Database.Graph.Node;
+import Events.EventType;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -10,6 +13,8 @@ public class ProvGraph {
 
     //Adjazenzliste hashID -> ausgehende Kanten
     private final Map<String,List<Edge>> outEdges = new HashMap<>();
+    //Eingehende Kanten
+    private final Map<String,List<Edge>> inEdges = new HashMap<>();
 
     /**
      * Fügt einen Knoten dem Graphen hinzu
@@ -19,6 +24,7 @@ public class ProvGraph {
         String hashId = node.getHashId();
         nodes.put(hashId,node);
         outEdges.putIfAbsent(hashId,new ArrayList<>());
+        inEdges.putIfAbsent(hashId,new ArrayList<>());
     }
 
     /**
@@ -28,8 +34,10 @@ public class ProvGraph {
     public void addEdge(Edge edge){
         edges.add(edge);
         String srcId = edge.getSrcNode().getHashId();
+        String dstId = edge.getDstNode().getHashId();
 
         outEdges.computeIfAbsent(srcId, k -> new ArrayList<>()).add(edge);
+        inEdges.computeIfAbsent(dstId, k-> new ArrayList<>()).add(edge);
     }
 
     /**
@@ -102,6 +110,22 @@ public class ProvGraph {
     }
 
     /**
+     * Liefert alle Kanten, die der jeweiligen Operation entsprechen
+     * @param operation Operations-Typ
+     * @return Liste der passenden Kanten
+     */
+    public List<Edge> findEdgeByOperation(EventType.Type operation){
+        List<Edge> out = new ArrayList<>();
+
+        for (Edge e : edges){
+            if(e.getOperation().equals(operation.toString())){
+                out.add(e);
+            }
+        }
+        return out;
+    }
+
+    /**
      * Vorwärts Traversierung.
      * @param hashId id des Knotens
      * @return Liste mit Edges, die von dem Knoten ausgehen
@@ -109,10 +133,23 @@ public class ProvGraph {
     public List<Edge> getOutEdges(String hashId){
         if(outEdges.containsKey(hashId)){
             return outEdges.get(hashId);
-        } else{
-            System.out.println("[WARN] getOutEdges: ungültiger Knoten. Nutze Fallback");
-            return Collections.emptyList();
         }
+        System.out.println("[WARN] getOutEdges: ungültiger Knoten. Nutze Fallback");
+        return Collections.emptyList();
+
+    }
+
+    /**
+     * Liefert, welche Kanten, von einem Knoten ausgehen
+     * @param hashId ID des Knotens
+     * @return Liste mit allen ausgehenden Kanten
+     */
+    public List<Edge> getInEdges(String hashId){
+        if (inEdges.containsKey(hashId)){
+            return inEdges.get(hashId);
+        }
+        System.out.println("[WARN] getInEdges: ungültiger Knoten, nutze Fallback");
+        return Collections.emptyList();
     }
 
     /**

@@ -1,26 +1,45 @@
 package Events;
 
+import Database.Graph.Edge;
+import Database.Graph.Node;
 import java.util.List;
+import ProvenanceGraph.ProvGraph;
 
-public class TTP {
+
+public abstract class TTP {
 
     private char severity;
 
-    private EventType type;
+    private EventType.Type type;
 
-    private List<String> prerequisites;
+    private List<Prerequisite> prerequisites;
 
-    EventType getType(){
+    public abstract boolean matches(Edge edge, ProvGraph graph);
+
+    protected boolean prerequisitesMet(Node node, ProvGraph graph ){
+        for(Prerequisite p : prerequisites){
+            if(!p.evaluate(node, graph)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    EventType.Type getType(){
         return type;
     }
     char getSeverity(){
         return severity;
     }
 
-    void setType(EventType type){
+    protected void setType(EventType.Type type){
         this.type= type;
     }
-    void setSeverity(char severity){
+    protected void setSeverity(char severity){
         this.severity = severity;
+    }
+
+    protected void setPrerequisites(List<Prerequisite> prerequisites){
+        this.prerequisites = prerequisites;
     }
 }
