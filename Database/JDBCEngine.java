@@ -1,6 +1,10 @@
 package Database;
 import java.sql.*;
 import java.util.*;
+
+/**
+ * Engine, um Daten aus der Datenbank zu holen
+ */
 public class JDBCEngine {
     //Zugangsdaten für die Datenbank
     private static final String DB_HOST = "localhost";
@@ -13,9 +17,13 @@ public class JDBCEngine {
 
     private Connection connection;
 
-    //private static final String TIMESTAMP_THRESH = "1522707048083354249";
+    //private static final String TIMESTAMP_THRESH = "1522707048083354249"; //5000 Kanten
     private static final String TIMESTAMP_THRESH = "1522709048083354400";
 
+    /**
+     * Stellt Verbindung zur Datenbank her
+     * @throws SQLException
+     */
     public void connect() throws SQLException {
         if (connection == null || connection.isClosed()){
             connection = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWD);
@@ -40,6 +48,7 @@ public class JDBCEngine {
         return connection;
     }
 
+    //Test-Ausgabe aller Kanten
     public ResultSet getAllEventsTest() {
         String sql = "SELECT * FROM event_table WHERE timestamp_rec <= "+ TIMESTAMP_THRESH;
         try(Statement stmt = getConnection().createStatement()){
@@ -62,8 +71,8 @@ public class JDBCEngine {
     }
 
     /**
-     * Liefert alle Entitäten im Zeitraum (ohne Dopplung)
-     * als Liste an Maps (Format: [UUID, Objekt])
+     * Liefert alle Entitäten im Zeitraum(ohne Dopplung)
+     * als Liste an Maps (Format [UUID, Objekt])
      * @param nodeType Tabelle aus der alle Knoten geliefert werden sollen (Wertebereich [1,3])
      * @return Liste aller relevanten Entitäten
      */
@@ -86,8 +95,8 @@ public class JDBCEngine {
                 "WHERE x.hash_id IN ( "+
                     "SELECT src_node FROM event_table WHERE timestamp_rec<= "+ TIMESTAMP_THRESH +
                     " UNION SELECT dst_node FROM event_table WHERE timestamp_rec<= "+ TIMESTAMP_THRESH+ ")";
-
         List<Map<String,Object>> rows = new ArrayList<>();
+
         try(Statement stmt = getConnection().createStatement()) {
             try (ResultSet rs = stmt.executeQuery(sql)) {
                 ResultSetMetaData meta = rs.getMetaData();
@@ -113,7 +122,7 @@ public class JDBCEngine {
 
     /**
      * Liefert alle Kanten im Zeitraum
-     * als Liste an Maps (Format: [UUID, Object])
+     * als Liste an Maps (Format [UUID, Object])
      * @return Liste aller Events
      */
     public List<Map<String,Object>> getAllEvents(){

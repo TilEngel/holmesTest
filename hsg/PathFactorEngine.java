@@ -7,103 +7,97 @@ import ProvenanceGraph.ProvGraph;
 
 import java.util.*;
 
+/**
+ * Klasse für PathFactor-Aufgaben
+ * "Online"-Version, wenn stetig neue Kanten kommen vllt deutlich aufwändiger (erweitern, wenn Zeit?)
+ */
 public class PathFactorEngine {
-    private final Node origin;
-
-    private final Map<String, Integer> pathFactors = new HashMap<>();
-
-    private final Map<String, Set<String>> ancestorSets = new HashMap<>();
-
     private final ProvGraph graph;
 
-    public PathFactorEngine(Node origin, ProvGraph graph){
-        this.origin = origin;
+    public PathFactorEngine(ProvGraph graph) {
         this.graph = graph;
-        //Startknoten hat PF = 1
-        String originId = origin.getHashId();
-        pathFactors.put(originId, 1);
-
-        // Origin ist sein eigener Vorfahre(für Vergleiche)
-        Set<String> origAncestors = new HashSet<>();
-        origAncestors.add(originId);
-        ancestorSets.put(originId, origAncestors);
-    }
-
-    public void processEdge(Edge edge){
-        Node src = edge.getSrcNode();
-        Node dst = edge.getDstNode();
-        String srcId = src.getHashId();
-        String dstId = dst.getHashId();
-
-        //Nur, wenn src von Origin erreichbar ist
-        if(pathFactors.containsKey(srcId)){
-            int srcPF = pathFactors.get(srcId);
-            int newPF;
-
-            // PF bleibt gleich, wenn dst kein Prozess-Knoten ist
-            if(!(dst instanceof Subject)){
-                newPF = srcPF;
-            } else { //Knoten ist Prozess
-                Subject dstSubject = (Subject) dst;
-                if(sharesAncestor(srcId, dstId)){
-                    newPF = srcPF;
-                } else{ //Kein gemeinsamer Vorfahre -> PF++
-                    newPF = srcPF+1;
-                }
-                updateAncestors(srcId, dstId);
-            }
-            //Minimum speichern
-            if(!pathFactors.containsKey(dstId) || newPF<pathFactors.get(dstId)){
-                pathFactors.put(dstId, newPF);
-            }
-        }
     }
 
     /**
-     * Liefert den berechneten PF des Knotens
-     * @param nodeHashId ID des Knotens
-     * @return pathFactor oder Integer.MAX_VALUE, wenn nicht möglich
+     * Berechnet alle PFs vom Ursprungsknoten aus
+     * @param origId ID des Ursprungs (wo TTP gematcht wurde)
+     * @return Map hashId -> PF
      */
-    public int getPathFactor(String nodeHashId){
-        return pathFactors.getOrDefault(nodeHashId,Integer.MAX_VALUE);
-    }
+    public Map<String, Integer> computePfFrom(String origId) {
+        Map<String, Integer> pathFactors = new HashMap<>();
+        Map<String, Set<String>> ancestorSets = new HashMap<>();
 
-    /*
-     * Prüft, ob die Knoten src und dst (mindestens) einen gemeinsamen Vorfahren haben
-     */
-    private boolean sharesAncestor(String srcId, String dstId) {
-        Set<String> srcAncestors = ancestorSets.getOrDefault(srcId, Collections.emptySet());
-        Set<String> dstAncestors = ancestorSets.getOrDefault(dstId, Collections.emptySet());
+        //Startknoten hat PF=  1
+        pathFactors.put(origId, 1);
+        Set<String> origAncestors = new HashSet<>();
+        origAncestors.add(origId); //ist sein eigener Vorfahre(für Vergleiche)
+        ancestorSets.put(origId, origAncestors);
 
-        for(String ancestor : srcAncestors){
-            if(dstAncestors.contains(ancestor)){
-                //Wenn Knoten sowohl Vorfahre von dst als auch von src ist
-                return true;
+        Queue<String> queue = new LinkedList<>();
+        queue.add(origId);
+        while (!queue.isEmpty()) {
+            String currentId = queue.poll();
+            int currentPF = pathFactors.get(currentId);
+
+            for (Edge e : graph.getOutEdges(currentId)) {
+                Node dst = e.getDstNode();
+                String dstId = dst.getHashId();
+
+                int newPF;
+                if (!(dst instanceof Subject)) {
+                    //Wenn dst kein Prozess-Knoten, bleibt PF gleich
+                    newPF = currentPF;
+                } else {
+                    Set<String> currentAncestors = ancestorSets.getOrDefault(currentId, Collections.emptySet());
+                    Set<String> dstAncestors = ancestorSets.getOrDefault(dstId, Collections.emptySet());
+                    //Haben beide Knoten gemeinsame Vorfahren?
+                    boolean shareAncestor = !Collections.disjoint(currentAncestors, dstAncestors);
+                    if (shareAncestor) {
+                        newPF = currentPF;
+                    } else { //kein gemeinsamer Vorfahre -> PF++
+                        newPF = currentPF + 1;
+                    }
+                }
+                //AncestorSet von dst erweitern
+                Set<String> newAncestors = new HashSet<>(ancestorSets.getOrDefault(currentId, Collections.emptySet()));
+                newAncestors.add(dstId);
+                if(ancestorSets.containsKey(dstId)){
+                    //falls dst schon eigene Vorfahren hat, wird newAncestors denen hinzugefügt
+                    ancestorSets.get(dstId).addAll(newAncestors);
+                } else{
+                    ancestorSets.put(dstId, newAncestors);
+                }
+                //Nur anpassen, wenn newPF < bisher
+                if (!pathFactors.containsKey(dstId) || newPF < pathFactors.get(dstId)) {
+                    pathFactors.put(dstId, newPF);
+                    queue.add(dstId);
+                }
             }
         }
-        return false;
+        return pathFactors;
+
     }
 
-    /*
-    Erweitert AncestorSet von dst.
-    Erbt Vorfahren von src und fügt sich selbst hinzu
+    /**
+     * Liefert PF zwischen orig und target
+     * @param origId Ursprung(TTP- Ursprung)
+     * @param targetId Knoten für den PF berechnet werden soll
+     * @return pathFactor(N1,N2) oder Integer.MAX_VALUE, wenn fehler
      */
-    private void updateAncestors(String srcId, String dstId){
-        Set<String> newAncestors = new HashSet<>();
-        //Vorfahren von src erben & sich selbst hinzufügen
-        newAncestors.addAll(ancestorSets.getOrDefault(srcId, Collections.emptySet()));
-        newAncestors.add(dstId);
-
-        if(ancestorSets.containsKey(dstId)){
-            //falls dst schon eigene Vorfahren hat, wird newAncestors denen hinzugefügt
-            ancestorSets.get(dstId).addAll(newAncestors);
-        } else{
-            ancestorSets.put(dstId, newAncestors);
-        }
-
+    public int getPathFactor(String origId, String targetId) {
+        Map<String,Integer> factors = computePfFrom(origId);
+        return factors.getOrDefault(targetId, Integer.MAX_VALUE);
     }
 
-    public Node getOrigin(){
-        return origin;
+    /**
+     * Gibt an, ob PF(N1,N2)<=threshold
+     * @param origId id des Ursprungsknotens
+     * @param targetId id des Zielknotens
+     * @param threshold PF-Schwellenwert
+     * @return true, wenn PF<= threshold, sonst false
+     */
+    public boolean isInPfThreshold(String origId, String targetId, int threshold){
+        return getPathFactor(origId,targetId) <= threshold;
     }
+
 }
