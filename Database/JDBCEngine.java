@@ -13,8 +13,8 @@ public class JDBCEngine {
 
     private Connection connection;
 
-    private static final String TIMESTAMP_THRESH = "1522707048083354249";
-
+    //private static final String TIMESTAMP_THRESH = "1522707048083354249";
+    private static final String TIMESTAMP_THRESH = "1522709048083354400";
 
     public void connect() throws SQLException {
         if (connection == null || connection.isClosed()){

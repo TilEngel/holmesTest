@@ -2,6 +2,7 @@ package ProvenanceGraph;
 
 import Database.Graph.*;
 import Database.*;
+import Events.Untrusted_Read;
 
 import java.util.HashMap;
 import java.util.List;
@@ -74,8 +75,10 @@ public class ProvGraphBuilder {
      */
     private void collectNetflows(){
         List<Map<String, Object>> rows = engine.getAllNodes('3');
+        int count=0;
         for(Map<String,Object> row : rows) {
 
+            count++;
             String uuid = (String) row.get("node_uuid");
             long nodeIndex = toLong(row.get("index_id"));
             String srcAddr = (String) row.get("src_addr");
@@ -88,6 +91,7 @@ public class ProvGraphBuilder {
             this.nodeIndex.put(hashId,n);
             graph.addNode(n);
         }
+        System.out.println("[INFO] "+ count + " Netflows verarbeitet");
 
     }
 
@@ -125,9 +129,9 @@ public class ProvGraphBuilder {
 
 
     public void printEdges() {
-        for(String hash : nodeIndex.keySet()){
-            graph.traverseForwardFrom(hash);
-        }
+        MatchingEngine engine = new MatchingEngine(graph);
+        engine.matchTTPs(List.of(new Untrusted_Read()));
+        System.out.println("[INFO] printEdges() beendet");
     }
 
 

@@ -9,7 +9,6 @@ public interface EventType {
         EVENT_EXIT ,
         EVENT_FORK ,
         EVENT_EXECUTE ,
-
         EVENT_CONNECT ,
         EVENT_ACCEPT ,
         EVENT_CREATE_OBJECT ,
@@ -17,5 +16,9 @@ public interface EventType {
         EVENT_MMAP ,
         EVENT_MODIFY_PROCESS ,
         EVENT_CHANGE_PRINCIPAL ,
+        EVENT_RENAME,
+        EVENT_SENDTO,
+        EVENT_RESCVMSG,
+        EVENT_RECVFROM
     }
 }
