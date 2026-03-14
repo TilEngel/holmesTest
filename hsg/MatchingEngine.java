@@ -1,8 +1,9 @@
-package ProvenanceGraph;
+package hsg;
 
 import Database.Graph.Edge;
 import Database.Graph.Netflow;
 import Events.TTP;
+import ProvenanceGraph.ProvGraph;
 
 import java.util.List;
 
