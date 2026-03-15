@@ -1,5 +1,5 @@
 import Database.JDBCEngine;
-import ProvenanceGraph.ProvGraphBuilder;
+import provenanceGraph.ProvGraphBuilder;
 
 import java.sql.SQLException;
 
@@ -14,7 +14,7 @@ public class Main {
             builder.printEdges();
             engine.disconnect();
         } catch (SQLException e){
-            System.out.println("[ERR] Fehler in Main: "+ e.getMessage());
+            System.out.println("[ERR] Fehler in src.Main: "+ e.getMessage());
         }
     }
 }

@@ -1,0 +1,10 @@
+#Datenbank Zugangsdaten
+config.properties
+
+#IntelliJ
+.idea/
+*.iml
+out/
+
+#Kompilierter Kram
+.class

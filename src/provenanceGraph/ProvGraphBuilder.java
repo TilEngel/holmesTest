@@ -1,8 +1,8 @@
-package ProvenanceGraph;
+package provenanceGraph;
 
 import Database.Graph.*;
 import Database.*;
-import Events.Untrusted_Read;
+import events.Untrusted_Read;
 import hsg.MatchingEngine;
 
 import java.util.HashMap;
@@ -136,7 +136,7 @@ public class ProvGraphBuilder {
     public void printEdges() {
         MatchingEngine engine = new MatchingEngine(graph);
         engine.matchTTPs(List.of(new Untrusted_Read()));
-        System.out.println("[INFO] printEdges() beendet");
+        System.out.println("[INFO] Testmethode printEdges() beendet");
     }
 
 

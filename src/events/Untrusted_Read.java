@@ -1,7 +1,7 @@
-package Events;
+package events;
 import Database.Graph.Edge;
 import Database.Graph.Netflow;
-import ProvenanceGraph.ProvGraph;
+import provenanceGraph.ProvGraph;
 
 import java.util.List;
 import java.util.Set;

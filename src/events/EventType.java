@@ -1,4 +1,4 @@
-package Events;
+package events;
 
 public interface EventType {
     enum Type{

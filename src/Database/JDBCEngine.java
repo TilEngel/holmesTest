@@ -1,4 +1,7 @@
 package Database;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
@@ -7,11 +10,26 @@ import java.util.*;
  */
 public class JDBCEngine {
     //Zugangsdaten für die Datenbank
-    private static final String DB_HOST = "localhost";
-    private static final String DB_PORT = "9999";
-    private static final String DB_NAME = "cadets_e3";
-    private static final String DB_USER = "til_engelbrecht";
-    private static final String DB_PASSWD = "aRLJP2Cso5tLAJD";
+    private static final String DB_HOST;
+    private static final String DB_PORT;
+    private static final String DB_NAME;
+    private static final String DB_USER;
+    private static final String DB_PASSWD;
+
+    //Holt private Daten aus properties Datei (Erstellt mit claude.ai)
+    static {
+        Properties props = new Properties();
+        try(FileInputStream fis = new FileInputStream("config.properties")){
+            props.load(fis);
+        } catch(IOException e){
+            throw new RuntimeException("[ERR] config.properties nicht gefunden: "+ e.getMessage());
+        }
+        DB_HOST = props.getProperty("DB_HOST");
+        DB_PORT = props.getProperty("DB_PORT");
+        DB_NAME = props.getProperty("DB_NAME");
+        DB_USER = props.getProperty("DB_USER");
+        DB_PASSWD = props.getProperty("DB_PASSWD");
+    }
 
     private static final String JDBC_URL = "jdbc:postgresql://" + DB_HOST + ":"+ DB_PORT + "/"+ DB_NAME;
 

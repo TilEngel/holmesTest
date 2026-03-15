@@ -1,9 +1,9 @@
-package Events;
+package events;
 
 import Database.Graph.Edge;
 import Database.Graph.Node;
 import java.util.List;
-import ProvenanceGraph.ProvGraph;
+import provenanceGraph.ProvGraph;
 
 
 public abstract class TTP {

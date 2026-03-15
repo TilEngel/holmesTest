@@ -1,8 +1,8 @@
-package ProvenanceGraph;
+package provenanceGraph;
 
 import Database.Graph.Edge;
 import Database.Graph.Node;
-import Events.EventType;
+import events.EventType;
 
 import java.util.*;
 import java.util.function.Predicate;

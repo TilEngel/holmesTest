@@ -3,7 +3,7 @@ package hsg;
 import Database.Graph.Edge;
 import Database.Graph.Node;
 import Database.Graph.Subject;
-import ProvenanceGraph.ProvGraph;
+import provenanceGraph.ProvGraph;
 
 import java.util.*;
 

@@ -1,10 +1,9 @@
 package hsg;
 
 import Database.Graph.Edge;
-import Database.Graph.Netflow;
 import Database.Graph.Node;
-import Events.TTP;
-import ProvenanceGraph.ProvGraph;
+import events.TTP;
+import provenanceGraph.ProvGraph;
 
 import java.util.HashMap;
 import java.util.List;
