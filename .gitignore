@@ -2,9 +2,10 @@
 config.properties
 
 #IntelliJ
-.idea/
+/.idea/
 *.iml
-out/
+/out/
 
 #Kompilierter Kram
 .class
+
