@@ -3,13 +3,17 @@ package ProvenanceGraph;
 import Database.Graph.*;
 import Database.*;
 import Events.Untrusted_Read;
+import hsg.MatchingEngine;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Engine, um aus den DB-Daten den Provenance-Graphen zu erstellen
+ */
 public class ProvGraphBuilder {
-    //Engine, um Daten aus der Datenbank zu holen
+
     private static JDBCEngine engine;
     //Mapping Hash_ID->Node-Objekt ermöglicht Zugriff in O(1)
     private final Map<String,Node> nodeIndex = new HashMap<>();
@@ -128,6 +132,7 @@ public class ProvGraphBuilder {
     }
 
 
+    //Test
     public void printEdges() {
         MatchingEngine engine = new MatchingEngine(graph);
         engine.matchTTPs(List.of(new Untrusted_Read()));

@@ -7,6 +7,9 @@ import Events.EventType;
 import java.util.*;
 import java.util.function.Predicate;
 
+/**
+ * Repräsentiert Graphen an sich nach außen
+ */
 public class ProvGraph {
     private final Map<String, Node> nodes = new HashMap<>();
     private final List<Edge> edges = new ArrayList<>();
@@ -70,14 +73,11 @@ public class ProvGraph {
         }
         System.out.println("Von Knoten " + getNode(startHashId).getName() + " können " + count +" Knoten erreicht werden");
         return visited;
-        /*
-         * Schauen in Paper, wie traversiert werden muss (auch rückwärts?)
-         * Test Methode, die traversierung nutzt
-         */
+
     }
 
     /**
-     * Traversierung mit Filterung anhand von Edge-Eigenschaften
+     * Traversierung mit Filterung anhand von Edge-Eigenschaften. Herausfinden, ob überhaupt nötig
      * @param startHashId ID des Knotens an dem gestartet wird
      * @param edgeFilter Liste an Filtern
      * @return Liste aller Knoten, die mit Bedingungen erreicht werden können
