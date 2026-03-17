@@ -2,6 +2,7 @@ package provenanceGraph;
 
 import Database.Graph.*;
 import Database.*;
+import events.Make_Mem_Exec;
 import events.Untrusted_Read;
 import hsg.MatchingEngine;
 
@@ -135,7 +136,10 @@ public class ProvGraphBuilder {
     //Test
     public void printEdges() {
         MatchingEngine engine = new MatchingEngine(graph);
-        engine.matchTTPs(List.of(new Untrusted_Read()));
+        engine.matchTTPs(List.of(
+                new Untrusted_Read(),
+                new Make_Mem_Exec()
+        ));
         System.out.println("[INFO] Testmethode printEdges() beendet");
     }
 
