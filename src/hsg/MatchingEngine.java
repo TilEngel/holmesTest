@@ -3,6 +3,7 @@ package hsg;
 import Database.Graph.Edge;
 import Database.Graph.Node;
 import events.TTP;
+import events.Untrusted_Read;
 import provenanceGraph.ProvGraph;
 
 import java.util.HashMap;
@@ -26,33 +27,36 @@ public class MatchingEngine {
      */
     public void matchTTPs(List<TTP> ttps){
         PathFactorEngine engine = new PathFactorEngine(graph);
+        Untrusted_Read untrustedRead = new Untrusted_Read();
         Map<String, Map<String, Integer>> pfCache = new HashMap<>();
+        // Zuerst Initial Compromise, sonst race Conditions
+        for (Edge e: graph.getEdges()){
+            if(untrustedRead.matches(e, graph)){
+                Node match = e.getDstNode();
+                match.addTTP(untrustedRead);
+                System.out.println("[TTP MATCH] "+ untrustedRead.getName() + " auf Knoten "+ match.getName());
+                String hashId = match.getHashId();
+                //PF berechnen (wenn nötig)
+                if(!pfCache.containsKey(hashId)){
+                    pfCache.put(hashId,engine.computePfFrom(hashId));
+                }
+            }
+        }
+        //Spätere TTPs
         for(Edge e : graph.getEdges()){
-            //TTP-Matching
             for(TTP ttp: ttps){
-                //Falls Match
-                if(ttp.matches(e,graph)){
-                    Node matched = e.getDstNode();
-                    matched.addTTP(ttp);
-                    System.out.println("[TTP MATCH] " + ttp.getName()+ " auf Knoten "+ matched.getName());
-                    //pfEngine für Knoten anlegen, falls noch nicht existiert
-                    String matchedHashId= matched.getHashId();
-                    if(!pfCache.containsKey(matchedHashId)){
-                        pfCache.put(matchedHashId, engine.computePfFrom(matchedHashId));
-                        //Anschließend sowas wie hsgBuilder.addNode()
+                if(ttp.matches(e, graph)){
+                    Node match = e.getDstNode();
+                    match.addTTP(ttp);
+                    System.out.println("[TTP MATCH] " + ttp.getName() + " auf Knoten "+ match.getName());
+                    String hashId = match.getHashId();
+                    if(!pfCache.containsKey(hashId)){
+                        pfCache.put(hashId, engine.computePfFrom(hashId));
+
                     }
                 }
             }
         }
-        for (String originId : pfCache.keySet()) {
-            System.out.println("[PathFactor] Ursprung: "
-                    + graph.getNode(originId).getName());
-            for (Map.Entry<String, Integer> entry : pfCache.get(originId).entrySet()) {
-                System.out.println("  -> " + graph.getNode(entry.getKey()).getName()
-                        + " : " + entry.getValue());
-            }
-        }
-
     }
 
 }

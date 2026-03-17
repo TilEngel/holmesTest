@@ -2,13 +2,13 @@ package provenanceGraph;
 
 import Database.Graph.*;
 import Database.*;
+import events.EventType;
 import events.Make_Mem_Exec;
+import events.Shell_Exec;
 import events.Untrusted_Read;
 import hsg.MatchingEngine;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Engine, um aus den DB-Daten den Provenance-Graphen zu erstellen
@@ -39,8 +39,10 @@ public class ProvGraphBuilder {
      * Erstellt Subjekt-Instanzen und legt sie in nodeIndex-Liste ab
      */
     private void collectSubjects(){
+        int count=0;
         List<Map<String, Object>> rows = engine.getAllNodes('1');
         for(Map<String,Object> row : rows) {
+            count++;
             String uuid = (String) row.get("node_uuid");
             long nodeIndex = toLong(row.get("index_id"));
             String path = (String) row.get("path");
@@ -51,6 +53,7 @@ public class ProvGraphBuilder {
             this.nodeIndex.put(hashId,s);
             graph.addNode(s);
         }
+        System.out.println("[INFO] "+ count+ " Subjects verarbeitet");
 
     }
 
@@ -59,7 +62,9 @@ public class ProvGraphBuilder {
      */
     private void collectFiles(){
         List<Map<String, Object>> rows = engine.getAllNodes('2');
+        int count = 0;
         for(Map<String,Object> row : rows) {
+            count++;
             String uuid = (String) row.get("node_uuid");
             long nodeIndex = toLong(row.get("index_id"));
             String path = (String) row.get("path");
@@ -72,6 +77,7 @@ public class ProvGraphBuilder {
             this.nodeIndex.put(hashId,f);
             graph.addNode(f);
         }
+        System.out.println("[INFO] "+ count+ " Files verarbeitet");
 
     }
 
@@ -136,9 +142,10 @@ public class ProvGraphBuilder {
     //Test
     public void printEdges() {
         MatchingEngine engine = new MatchingEngine(graph);
+
         engine.matchTTPs(List.of(
-                new Untrusted_Read(),
-                new Make_Mem_Exec()
+                new Make_Mem_Exec(),
+                new Shell_Exec()
         ));
         System.out.println("[INFO] Testmethode printEdges() beendet");
     }
