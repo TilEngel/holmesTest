@@ -145,7 +145,7 @@ public class ProvGraphBuilder {
         List<TTP> establishFoothold = List.of(new Make_Mem_Exec(pf), new Shell_Exec(pf));
         List<TTP> privilegeEscalation = List.of(new Switch_SU(pf));
         List<TTP> internalRecon = List.of(new Sensitive_Command(pf));
-        List<TTP> cleanup = List.of(new Sensitive_Temp_RM(pf));
+        List<TTP> cleanup = List.of(new Sensitive_Temp_RM(pf), new Clear_Logs(pf));
         engine.matchTTPs(List.of(
                 initialCompromise, establishFoothold,
                 privilegeEscalation, internalRecon, cleanup

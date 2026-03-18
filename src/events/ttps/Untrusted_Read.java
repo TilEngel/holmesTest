@@ -8,6 +8,10 @@ import provenanceGraph.ProvGraph;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Es kann nicht zuverlässig gesagt werden, welche IPs vertrauenswürdig sind
+ * und welche nicht :( Stattdessen alle Netflows-reads als untrusted melden
+ */
 public class Untrusted_Read extends TTP {
 
     private static final Set<String> TRUSTED_IPS = Set.of(
