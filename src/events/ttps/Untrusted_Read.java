@@ -1,13 +1,14 @@
-package events;
+package events.ttps;
 import Database.Graph.Edge;
 import Database.Graph.Netflow;
-import hsg.PathFactorEngine;
+import events.EventType;
+import events.ttps.TTP;
 import provenanceGraph.ProvGraph;
 
 import java.util.List;
 import java.util.Set;
 
-public class Untrusted_Read extends TTP{
+public class Untrusted_Read extends TTP {
 
     private static final Set<String> TRUSTED_IPS = Set.of(
             "10.0.67.23" //z.B

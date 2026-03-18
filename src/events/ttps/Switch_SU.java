@@ -1,14 +1,16 @@
-package events;
+package events.ttps;
 
 import Database.Graph.Edge;
 import Database.Graph.Subject;
+import events.EventType;
+import events.ttps.TTP;
 import hsg.PathFactorEngine;
 import provenanceGraph.ProvGraph;
 
 import java.util.List;
 import java.util.Set;
 
-public class Switch_SU extends TTP{
+public class Switch_SU extends TTP {
     private static final Set<String> SUPERUSER_TOOLS = Set.of(
             "sudo", "su", "doas");
 

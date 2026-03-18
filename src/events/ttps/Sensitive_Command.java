@@ -1,16 +1,16 @@
-package events;
+package events.ttps;
 
 import Database.Graph.Subject;
+import events.EventType;
+import events.ttps.TTP;
 import hsg.PathFactorEngine;
 import Database.Graph.Edge;
-import Database.Graph.Node;
-import jdk.jfr.Event;
 import provenanceGraph.ProvGraph;
 
 import java.util.Set;
 import java.util.List;
 
-public class Sensitive_Command extends TTP{
+public class Sensitive_Command extends TTP {
     private static final Set<String> SENSITIVE_COMMANDS = Set.of(
             "whoami", "hostname", "ifconfig", "netstat", "uname",
             //nicht explizit genannt aber auch sinnvoll

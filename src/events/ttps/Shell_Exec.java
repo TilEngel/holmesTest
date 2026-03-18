@@ -1,10 +1,11 @@
-package events;
+package events.ttps;
 
 import Database.Graph.Edge;
 import Database.Graph.Subject;
+import events.EventType;
+import events.ttps.TTP;
 import hsg.PathFactorEngine;
 import Database.Graph.File;
-import Database.Graph.Node;
 import provenanceGraph.ProvGraph;
 
 import java.util.List;

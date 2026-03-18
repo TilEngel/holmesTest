@@ -1,6 +1,6 @@
 package Database.Graph;
 
-import events.TTP;
+import events.ttps.TTP;
 
 import java.util.HashSet;
 import java.util.Set;

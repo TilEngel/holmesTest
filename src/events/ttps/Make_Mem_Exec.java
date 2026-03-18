@@ -1,7 +1,8 @@
-package events;
+package events.ttps;
 
 import Database.Graph.Edge;
 import Database.Graph.Subject;
+import events.EventType;
 import hsg.PathFactorEngine;
 import provenanceGraph.ProvGraph;
 import Database.Graph.Node;
@@ -9,7 +10,7 @@ import java.util.List;
 
 
 
-public class Make_Mem_Exec extends TTP{
+public class Make_Mem_Exec extends TTP {
 
     public Make_Mem_Exec(PathFactorEngine engine){
         this.pfEngine = engine;

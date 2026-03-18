@@ -2,8 +2,7 @@ package hsg;
 
 import Database.Graph.Edge;
 import Database.Graph.Node;
-import events.TTP;
-import events.Untrusted_Read;
+import events.ttps.TTP;
 import provenanceGraph.ProvGraph;
 
 import java.util.HashMap;

@@ -19,6 +19,7 @@ public interface EventType {
         EVENT_RENAME,
         EVENT_SENDTO,
         EVENT_RESCVMSG,
-        EVENT_RECVFROM
+        EVENT_RECVFROM,
+        EVENT_UNLINK
     }
 }

@@ -1,10 +1,11 @@
-package events;
+package events.ttps;
 
 import Database.Graph.Edge;
 import Database.Graph.Node;
 import java.util.List;
-import java.util.Map;
 
+import events.EventType;
+import events.Prerequisite;
 import hsg.PathFactorEngine;
 import provenanceGraph.ProvGraph;
 
@@ -58,6 +59,20 @@ public abstract class TTP {
                 }
             }
         }
+        return false;
+    }
+
+    boolean hasInternalReconAncestor(Node target, ProvGraph graph){
+        Sensitive_Command sc = new Sensitive_Command(pfEngine);
+
+        for(Node candidate : graph.getNodes().values()){
+            if(candidate.hasMatchedTTP(sc)){
+                if(pfEngine.isInPfThreshold(candidate.getHashId(), target.getHashId(), PF_THRESHOLD)){
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
