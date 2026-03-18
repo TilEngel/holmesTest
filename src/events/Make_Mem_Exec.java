@@ -10,9 +10,9 @@ import java.util.List;
 
 
 public class Make_Mem_Exec extends TTP{
-    private PathFactorEngine pfEngine;
 
-    public Make_Mem_Exec(){
+    public Make_Mem_Exec(PathFactorEngine engine){
+        this.pfEngine = engine;
         setSeverity('M');
         setType(EventType.Type.EVENT_MODIFY_PROCESS);
         //Zielknoten muss Prozess sein
@@ -21,10 +21,7 @@ public class Make_Mem_Exec extends TTP{
 
     @Override
     public boolean matches(Edge edge, ProvGraph  graph){
-        // nur eine Engine erstellen
-        if(pfEngine == null){
-            pfEngine = new PathFactorEngine(graph);
-        }
+
         //Event muss MODIFY_PROCESS sein
         if(!edge.getOperation().equals(EventType.Type.EVENT_MODIFY_PROCESS.toString())){
             return false;

@@ -2,11 +2,9 @@ package provenanceGraph;
 
 import Database.Graph.*;
 import Database.*;
-import events.EventType;
-import events.Make_Mem_Exec;
-import events.Shell_Exec;
-import events.Untrusted_Read;
+import events.*;
 import hsg.MatchingEngine;
+import hsg.PathFactorEngine;
 
 import java.util.*;
 
@@ -142,10 +140,12 @@ public class ProvGraphBuilder {
     //Test
     public void printEdges() {
         MatchingEngine engine = new MatchingEngine(graph);
-
+        PathFactorEngine pf = new PathFactorEngine(graph);
+        List<TTP> initialCompromise = List.of(new Untrusted_Read());
+        List<TTP> establishFoothold = List.of(new Make_Mem_Exec(pf), new Shell_Exec(pf));
+        List<TTP> privilegeEscalation = List.of(new Switch_SU(pf));
         engine.matchTTPs(List.of(
-                new Make_Mem_Exec(),
-                new Shell_Exec()
+                initialCompromise, establishFoothold, privilegeEscalation
         ));
         System.out.println("[INFO] Testmethode printEdges() beendet");
     }

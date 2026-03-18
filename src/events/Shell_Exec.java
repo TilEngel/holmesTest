@@ -19,9 +19,9 @@ public class Shell_Exec extends TTP {
             "cmd.exe",
             "powershell.exe"
     );
-    private PathFactorEngine pfEngine;
 
-    public Shell_Exec(){
+    public Shell_Exec(PathFactorEngine engine){
+        this.pfEngine = engine;
         setSeverity('M');
         setType(EventType.Type.EVENT_EXECUTE);
         setPrerequisites(List.of(
@@ -47,22 +47,7 @@ public class Shell_Exec extends TTP {
         return hasInitialCompromiseAncestor(edge.getDstNode(), graph);
     }
 
-    private boolean hasInitialCompromiseAncestor(Node target, ProvGraph graph){
-        if(pfEngine == null){
-            pfEngine = new PathFactorEngine(graph);
-        }
-        Untrusted_Read uR = new Untrusted_Read();
-        Make_Mem_Exec mME = new Make_Mem_Exec();
 
-        for(Node candidate: graph.getNodes().values()){
-            if(candidate.hasMatchedTTP(uR)|| candidate.hasMatchedTTP(mME)){
-                if(pfEngine.isInPfThreshold(candidate.getHashId(),target.getHashId(), PF_THRESHOLD)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     @Override
     public String getName(){

@@ -1,6 +1,7 @@
 package events;
 import Database.Graph.Edge;
 import Database.Graph.Netflow;
+import hsg.PathFactorEngine;
 import provenanceGraph.ProvGraph;
 
 import java.util.List;
