@@ -144,8 +144,10 @@ public class ProvGraphBuilder {
         List<TTP> initialCompromise = List.of(new Untrusted_Read());
         List<TTP> establishFoothold = List.of(new Make_Mem_Exec(pf), new Shell_Exec(pf));
         List<TTP> privilegeEscalation = List.of(new Switch_SU(pf));
+        List<TTP> internalRecon = List.of(new Sensitive_Command(pf));
         engine.matchTTPs(List.of(
-                initialCompromise, establishFoothold, privilegeEscalation
+                initialCompromise, establishFoothold,
+                privilegeEscalation, internalRecon
         ));
         System.out.println("[INFO] Testmethode printEdges() beendet");
     }
