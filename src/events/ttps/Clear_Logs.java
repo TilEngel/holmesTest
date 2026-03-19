@@ -20,7 +20,9 @@ public class Clear_Logs extends TTP{
     );
 
     public Clear_Logs(PathFactorEngine engine){
-        this.pfEngine= engine;
+        if (pfEngine ==null) {
+            pfEngine = engine;
+        }
         setSeverity('H');
         setType(EventType.Type.EVENT_UNLINK);
         setPrerequisites(List.of(

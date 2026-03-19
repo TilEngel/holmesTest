@@ -36,26 +36,6 @@ public class Make_Mem_Exec extends TTP {
 
     }
 
-    /**
-     * Prüft, ob ein Untrusted Read mit
-     * PathFactor<= PF_THRESHOLD existiert
-     * @param target Zielknoten
-     * @param graph Provenance-Graph
-     * @return true, wenn Bedingungen erfüllt, false, wenn nict
-     */
-    private  boolean hasUntrustedReadAncestor(Node target, ProvGraph graph){
-        Untrusted_Read uR = new Untrusted_Read();
-
-        for(Node candidate : graph.getNodes().values()){
-            if(candidate.hasMatchedTTP(uR)){
-                if(pfEngine.isInPfThreshold(candidate.getHashId(), target.getHashId(), PF_THRESHOLD)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public String getName(){
         return "make_mem_exec";

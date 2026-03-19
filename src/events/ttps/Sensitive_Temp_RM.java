@@ -12,7 +12,9 @@ import java.util.List;
 
 public class Sensitive_Temp_RM extends TTP {
     public Sensitive_Temp_RM(PathFactorEngine engine){
-        this.pfEngine = engine;
+        if (pfEngine ==null) {
+            pfEngine = engine;
+        }
         setSeverity('M');
         setType(EventType.Type.EVENT_UNLINK);
         setPrerequisites(List.of(

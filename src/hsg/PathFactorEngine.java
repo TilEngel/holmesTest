@@ -14,6 +14,8 @@ import java.util.*;
 public class PathFactorEngine {
     private final ProvGraph graph;
 
+    private final Map<String, Map<String,Integer>> cache = new HashMap<>();
+
     public PathFactorEngine(ProvGraph graph) {
         this.graph = graph;
     }
@@ -24,6 +26,10 @@ public class PathFactorEngine {
      * @return Map hashId -> PF
      */
     public Map<String, Integer> computePfFrom(String origId) {
+        //direkt zurückgeben, wenn im cache (spart super viele Berechnungen)
+        if(cache.containsKey(origId)){
+            return cache.get(origId);
+        }
         Map<String, Integer> pathFactors = new HashMap<>();
         Map<String, Set<String>> ancestorSets = new HashMap<>();
 
@@ -74,20 +80,11 @@ public class PathFactorEngine {
                 }
             }
         }
+        cache.put(origId, pathFactors); //Ergebnis cachen
         return pathFactors;
 
     }
 
-    /**
-     * Liefert PF zwischen orig und target
-     * @param origId Ursprung(TTP- Ursprung)
-     * @param targetId Knoten für den PF berechnet werden soll
-     * @return pathFactor(N1,N2) oder Integer.MAX_VALUE, wenn fehler
-     */
-    public int getPathFactor(String origId, String targetId) {
-        Map<String,Integer> factors = computePfFrom(origId);
-        return factors.getOrDefault(targetId, Integer.MAX_VALUE);
-    }
 
     /**
      * Gibt an, ob PF(N1,N2)<=threshold
@@ -97,7 +94,8 @@ public class PathFactorEngine {
      * @return true, wenn PF<= threshold, sonst false
      */
     public boolean isInPfThreshold(String origId, String targetId, int threshold){
-        return getPathFactor(origId,targetId) <= threshold;
+        Map<String,Integer> factors = computePfFrom(origId);
+        return factors.getOrDefault(targetId, Integer.MAX_VALUE) <= threshold;
     }
 
 }

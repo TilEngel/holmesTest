@@ -18,7 +18,7 @@ public abstract class TTP {
     private EventType.Type type;
 
     private List<Prerequisite> prerequisites;
-    PathFactorEngine pfEngine;
+    static PathFactorEngine pfEngine; //"singleton" PFEngine -> ressourcenschonend
 
     public abstract boolean matches(Edge edge, ProvGraph graph);
 
@@ -73,6 +73,26 @@ public abstract class TTP {
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Prüft, ob ein Untrusted Read mit
+     * PathFactor<= PF_THRESHOLD existiert
+     * @param target Zielknoten
+     * @param graph Provenance-Graph
+     * @return true, wenn Bedingungen erfüllt, false, wenn nict
+     */
+    boolean hasUntrustedReadAncestor(Node target, ProvGraph graph){
+        Untrusted_Read uR = new Untrusted_Read();
+
+        for(Node candidate : graph.getNodes().values()){
+            if(candidate.hasMatchedTTP(uR)){
+                if(pfEngine.isInPfThreshold(candidate.getHashId(), target.getHashId(), PF_THRESHOLD)){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

@@ -22,7 +22,9 @@ public class Shell_Exec extends TTP {
     );
 
     public Shell_Exec(PathFactorEngine engine){
-        this.pfEngine = engine;
+        if (pfEngine ==null) {
+            pfEngine = engine;
+        }
         setSeverity('M');
         setType(EventType.Type.EVENT_EXECUTE);
         setPrerequisites(List.of(

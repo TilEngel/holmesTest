@@ -26,7 +26,6 @@ public class MatchingEngine {
      */
     public void matchTTPs(List<List<TTP>> ttps){
         PathFactorEngine engine = new PathFactorEngine(graph);
-        Map<String, Map<String, Integer>> pfCache = new HashMap<>();
         //TTPs Phasenweise durchgehen (sonst Gefahr von Race-Conditions)
         for(List<TTP> list : ttps) {
             for(Edge e : graph.getEdges()){
@@ -36,12 +35,6 @@ public class MatchingEngine {
                         Node match = e.getDstNode();
                         match.addTTP(ttp);
                         System.out.println("[TTP MATCH] " + ttp.getName() + " auf Knoten " + match.getName());
-                        String hashId = match.getHashId();
-                        //PF berechnen, wenn nötig
-                        if (!pfCache.containsKey(hashId)) {
-                            pfCache.put(hashId, engine.computePfFrom(hashId));
-
-                        }
                     }
                 }
             }

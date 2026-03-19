@@ -15,7 +15,9 @@ public class Switch_SU extends TTP {
             "sudo", "su", "doas");
 
     public Switch_SU(PathFactorEngine engine){
-        this.pfEngine = engine;
+        if (pfEngine ==null) {
+            pfEngine = engine;
+        }
         setSeverity('H');
         setType(EventType.Type.EVENT_CHANGE_PRINCIPAL);
         setPrerequisites(List.of(
