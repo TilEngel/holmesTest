@@ -51,9 +51,10 @@ public abstract class TTP {
     boolean hasInitialCompromiseAncestor(Node target, ProvGraph graph){
         Untrusted_Read uR = new Untrusted_Read();
         Make_Mem_Exec mME = new Make_Mem_Exec(pfEngine);
+        Untrusted_File_Exec uFE = new Untrusted_File_Exec(pfEngine);
 
         for(Node candidate: graph.getNodes().values()){
-            if(candidate.hasMatchedTTP(uR)|| candidate.hasMatchedTTP(mME)){
+            if(candidate.hasMatchedTTP(uR)|| candidate.hasMatchedTTP(mME) || candidate.hasMatchedTTP(uFE)){
                 if(pfEngine.isInPfThreshold(candidate.getHashId(),target.getHashId(), PF_THRESHOLD)){
                     return true;
                 }

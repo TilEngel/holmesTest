@@ -10,6 +10,10 @@ import provenanceGraph.ProvGraph;
 import java.util.Set;
 import java.util.List;
 
+/**
+ * Sensitive_Command in Internal_Recon
+ * Nach Initial_Compromise wird ein potentiell gefährlicher Command verwendet
+ */
 public class Sensitive_Command extends TTP {
     private static final Set<String> SENSITIVE_COMMANDS = Set.of(
             "whoami", "hostname", "ifconfig", "netstat", "uname",

@@ -10,6 +10,10 @@ import provenanceGraph.ProvGraph;
 
 import java.util.List;
 
+/**
+ * Untrusted_File_Exec in Initial_Compromise
+ * nach Untrusted Read wird eine Datei ausgeführt
+ */
 public class Untrusted_File_Exec extends TTP{
     public Untrusted_File_Exec(PathFactorEngine engine){
         if (pfEngine ==null) {

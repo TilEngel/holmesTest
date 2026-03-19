@@ -11,6 +11,10 @@ import provenanceGraph.ProvGraph;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Shell_Exec in Establisch_Foothold
+ * Nach Initial_Compromise wird Shell verwendet
+ */
 public class Shell_Exec extends TTP {
     private static final Set<String> SHELL_PATHS = Set.of(
             "/bin/bash",

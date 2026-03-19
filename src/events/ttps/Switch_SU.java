@@ -10,6 +10,10 @@ import provenanceGraph.ProvGraph;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Switch_SU in Privilege_Escalation
+ * Nach Initial_Compromise werden superuser-tools verwendet
+ */
 public class Switch_SU extends TTP {
     private static final Set<String> SUPERUSER_TOOLS = Set.of(
             "sudo", "su", "doas");

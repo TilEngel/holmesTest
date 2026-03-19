@@ -10,6 +10,10 @@ import provenanceGraph.ProvGraph;
 
 import java.util.List;
 
+/**
+ * Sensitive_Temp_RM in Cleanup_Tracks
+ * Nach Initial_Compromise und Internal_Recon wird Datei gelöscht
+ */
 public class Sensitive_Temp_RM extends TTP {
     public Sensitive_Temp_RM(PathFactorEngine engine){
         if (pfEngine ==null) {

@@ -9,7 +9,10 @@ import Database.Graph.Node;
 import java.util.List;
 
 
-
+/**
+ * Make_Mem_Exec in Initial_Compromise
+ * Nach Untrusted_Read wird ein Prozess modifiziert
+ */
 public class Make_Mem_Exec extends TTP {
 
     public Make_Mem_Exec(PathFactorEngine engine){

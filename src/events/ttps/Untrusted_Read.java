@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Untrusted_Read in Initial_Compromise
+ * unbekannte IP liest
+ * Ausgangspunkt für alle weiteren TTPs
  * Es kann nicht zuverlässig gesagt werden, welche IPs vertrauenswürdig sind
  * und welche nicht :( Stattdessen alle Netflows-reads als untrusted melden
  */

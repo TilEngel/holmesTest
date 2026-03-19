@@ -10,6 +10,10 @@ import provenanceGraph.ProvGraph;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Clear_Logs in Cleanup_Tracks
+ * Nach Initial_Compromise werden Dateien in Log-Ordnern gelöscht
+ */
 public class Clear_Logs extends TTP{
 
     private static final Set<String> LOG_PATHS = Set.of(
