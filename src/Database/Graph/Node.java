@@ -1,6 +1,6 @@
 package Database.Graph;
 
-import events.TTP;
+import events.ttps.TTP;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +11,7 @@ public abstract class Node {
 
     private String hashId;
 
-    private final Set<TTP> ttps = new HashSet<>();
+    private final Set<String> ttps = new HashSet<>();
 
     public Node(String uuid, long nodeIndex, String hashId) {
         setNodeIndex(nodeIndex);
@@ -46,7 +46,7 @@ public abstract class Node {
      * @param ttp hinzuzufügendes TTP
      */
     public void addTTP(TTP ttp){
-        ttps.add(ttp);
+        ttps.add(ttp.getName());
     }
 
     /**
@@ -55,7 +55,7 @@ public abstract class Node {
      * @return true, wenn TTP bereits eingetragen ist, false sonst
      */
     public boolean hasMatchedTTP(TTP ttp){
-        return ttps.contains(ttp);
+        return ttps.contains(ttp.getName());
     }
 
     /**
