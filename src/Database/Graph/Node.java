@@ -57,7 +57,9 @@ public abstract class Node {
     public boolean hasMatchedTTP(TTP ttp){
         return ttps.contains(ttp.getName());
     }
-
+    public Set<String> getTtps(){
+        return ttps;
+    }
     /**
      * Liefert den Namen des Knotens, je nach Art unterschiedlich
      * (Subject: Name des Commands , File: Pfadname, Netflow: Source Port)

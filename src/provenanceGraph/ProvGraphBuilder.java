@@ -3,6 +3,7 @@ package provenanceGraph;
 import Database.Graph.*;
 import Database.*;
 import events.ttps.*;
+import hsg.HSGBuilder;
 import hsg.MatchingEngine;
 import hsg.PathFactorEngine;
 
@@ -152,6 +153,9 @@ public class ProvGraphBuilder {
                 initialCompromise, initialCompromise2, establishFoothold,
                 privilegeEscalation, internalRecon, cleanupTracks
         ));
+
+        HSGBuilder hsgBuilder = new HSGBuilder(graph, pf);
+        hsgBuilder.constructHSG();
         System.out.println("[INFO] Testmethode printEdges() beendet");
     }
 

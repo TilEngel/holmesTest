@@ -11,7 +11,7 @@ import provenanceGraph.ProvGraph;
 
 
 public abstract class TTP {
-    static final int PF_THRESHOLD = 2;
+    public static final int PF_THRESHOLD = 2;
 
     private char severity;
 
