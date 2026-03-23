@@ -15,6 +15,7 @@ public class HSGBuilder {
     private final PathFactorEngine pfEngine;
 
     private final Map<String, Set<String>> hsgEdges = new HashMap<>();
+    private final Map<String,Set<String>> incomingEdges = new HashMap<>();
     private final Map<String, Node> hsgNodes = new HashMap<>();
 
     public HSGBuilder(ProvGraph graph, PathFactorEngine pfEngine){
@@ -30,7 +31,56 @@ public class HSGBuilder {
     public void constructHSG(){
         collectTTPNodes();
         connectNodes();
-        printHSG();
+        printScenarios(detectScenarios());
+    }
+
+    /**
+     * Soll verschiedene Szenarios erkennen
+     * @return Liste mit allen Szenarios
+     */
+    public List<List<Node>> detectScenarios (){
+        List<List<Node>> scenarios = new ArrayList<>();
+        Set<String> visited = new HashSet<>();
+
+        for(String nodeId : hsgNodes.keySet()){
+            if(!visited.contains(nodeId)){
+                List<Node> scenario = new ArrayList<>();
+                traverse(nodeId, visited,scenario);
+                scenarios.add(scenario);
+            }
+        }
+        return scenarios;
+    }
+
+    /**
+     * Durchläuft den HSG
+     * @param nodeId Startknoten
+     * @param visited Liste, bereits besuchter Knoten
+     * @param scenario Szenario
+     */
+    private void traverse(String nodeId, Set<String> visited, List<Node> scenario){
+        Queue<String> queue = new LinkedList<>();
+        queue.add(nodeId);
+
+        while (!queue.isEmpty()){
+            String current = queue.poll();
+            if(!visited.contains(current)){
+                visited.add(current);
+                scenario.add(hsgNodes.get(current));
+
+                for(String dstId: hsgEdges.getOrDefault(current, Collections.emptySet())){
+                    if(!visited.contains(dstId)){
+                        queue.add(dstId);
+                    }
+
+                }
+                for(String srcId: incomingEdges.getOrDefault(current, Collections.emptySet())){
+                    if(!visited.contains(srcId)){
+                        queue.add(srcId);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -67,6 +117,13 @@ public class HSGBuilder {
                     //Wenn PF passt Kante erzeugen
                     if(pf <= TTP.PF_THRESHOLD){
                         hsgEdges.get(srcId).add(dstId);
+                        if(incomingEdges.containsKey(dstId)){
+                            incomingEdges.get(dstId).add(srcId);
+                        } else {
+                            Set<String> incoming = new HashSet<>();
+                            incoming.add(srcId);
+                            incomingEdges.put(dstId,incoming);
+                        }
                     }
                 }
             }
@@ -97,5 +154,27 @@ public class HSGBuilder {
     //Hilfsmethode für einheitliche Knoten ausgabe
     private String printNode(Node node){
         return "[" +node.getName() + " ("+ node.getTtps()+ ")]";
+    }
+
+    public void printScenarios(List<List<Node>> scenarios){
+        int count = 0;
+
+        for(List<Node> scenario : scenarios){
+            count++;
+            System.out.println("\n---Scenario "+ count + "---");
+            System.out.println("Beteiligte Knoten:" + scenario.size());
+
+            Set<String> ttps = new LinkedHashSet<>();
+            for(Node n: scenario){
+                ttps.addAll(n.getTtps());
+
+            }
+            System.out.println("Erkannte TTPs: "+ ttps);
+
+            for (Node n: scenario){
+                System.out.println(" "+ n.getName() + " --> TTPs: "+ n.getTtps());
+            }
+        }
+
     }
 }
