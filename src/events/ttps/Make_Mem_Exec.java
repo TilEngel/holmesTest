@@ -40,6 +40,22 @@ public class Make_Mem_Exec extends TTP {
     }
 
     @Override
+    public boolean matchesSimple(Edge edge, ProvGraph  graph){
+
+        //Event muss MODIFY_PROCESS sein
+        if(!edge.getOperation().equals(EventType.Type.EVENT_MODIFY_PROCESS.toString())){
+            return false;
+        }
+        //Prüfen, ob Zielknoten Prozess
+        if(!prerequisitesMet(edge, graph)){
+            return false;
+        }
+        //kommt vorher Untrusted_read?
+        return true;
+
+    }
+
+    @Override
     public String getName(){
         return "make_mem_exec";
     }

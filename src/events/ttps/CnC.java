@@ -42,6 +42,18 @@ public class CnC extends TTP{
     }
 
     @Override
+    public boolean matchesSimple(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_SENDTO.toString())){
+            return false;
+        }
+        if(!prerequisitesMet(edge,graph)){
+            return false;
+        }
+        //hier srcNode prüfen, weil der Prozess ist
+        return true;
+    }
+
+    @Override
     public String getName(){
         return "cnc";
     }

@@ -111,9 +111,10 @@ public class ProvGraphBuilder {
      */
     private void collectEvents(){
         List<Map<String,Object>> rows = engine.getAllEvents();
-        int skipped =0;
+        int count =0;
 
         for (Map<String,Object> row:rows ){
+            count++;
             String srcId = (String) row.get("src_node");
             String dstId = (String) row.get("dst_node");
             //jwlg. Knoten-Instanzen aus NodeIndex holen
@@ -122,7 +123,6 @@ public class ProvGraphBuilder {
 
             // falls einer der Knoten nicht im Zeitfenster liegt
             if(srcNode == null || dstNode == null){
-                skipped++;
                 continue;
             }
             String eventUuid = (String) row.get("event_uuid");
@@ -134,7 +134,7 @@ public class ProvGraphBuilder {
 
             graph.addEdge(e);
         }
-        System.out.println("[INFO] Edges geladen  | skipped: "+ skipped);
+        System.out.println("[INFO] "+ count + " Edges geladen");
     }
 
 

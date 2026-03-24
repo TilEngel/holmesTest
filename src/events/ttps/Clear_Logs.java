@@ -58,6 +58,16 @@ public class Clear_Logs extends TTP{
         }
         return hasInitialCompromiseAncestor(edge.getSrcNode(), graph);
     }
+    @Override
+    public boolean matchesSimple(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_UNLINK.toString())){
+            return false;
+        }
+        if(! prerequisitesMet(edge,graph)){
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String getName(){

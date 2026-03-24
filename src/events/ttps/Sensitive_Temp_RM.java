@@ -42,6 +42,17 @@ public class Sensitive_Temp_RM extends TTP {
     }
 
     @Override
+    public  boolean matchesSimple(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_UNLINK.toString())){
+            return false;
+        }
+        if(!prerequisitesMet(edge, graph)){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public String getName(){
         return "sensitive_temp_rm";
     }

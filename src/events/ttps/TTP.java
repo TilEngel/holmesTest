@@ -11,7 +11,7 @@ import provenanceGraph.ProvGraph;
 
 
 public abstract class TTP {
-    public static final int PF_THRESHOLD = 2;
+    public static final int PF_THRESHOLD = 3;
 
     private char severity;
 
@@ -21,6 +21,7 @@ public abstract class TTP {
     static PathFactorEngine pfEngine; //"singleton" PFEngine -> ressourcenschonend
 
     public abstract boolean matches(Edge edge, ProvGraph graph);
+    public abstract boolean matchesSimple(Edge edge, ProvGraph graph);
 
     //gibt TTP-Name zurück, welcher in Node.ttps gespeichert wird
     public abstract String getName();

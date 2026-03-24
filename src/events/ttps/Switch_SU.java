@@ -49,6 +49,18 @@ public class Switch_SU extends TTP {
     }
 
     @Override
+    public boolean matchesSimple(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_CHANGE_PRINCIPAL.toString())){
+            return false;
+        }
+        if(!prerequisitesMet(edge, graph)){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public String getName(){
         return "switch_su";
     }
