@@ -30,7 +30,7 @@ public class Untrusted_File_Exec extends TTP{
 
     }
     @Override
-    public boolean matches(Edge edge, ProvGraph graph){
+    public boolean matchesOld(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_EXECUTE.toString())){
             return false;
         }
@@ -41,7 +41,7 @@ public class Untrusted_File_Exec extends TTP{
     }
 
     @Override
-    public boolean matchesSimple(Edge edge, ProvGraph graph){
+    public boolean matches(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_EXECUTE.toString())){
             return false;
         }

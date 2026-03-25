@@ -66,7 +66,7 @@ public class MatchingEngine {
                             //TTP Matching
                             for(List<TTP> phase : phases){
                                 for(TTP ttp: phase){
-                                    if(ttp.matchesSimple(e, graph)){
+                                    if(ttp.matches(e, graph)){
 
                                         for(TTPChain chain: currentNode.getChains()){
                                             if(!chain.getTtps().contains(ttp.getName())){
@@ -97,7 +97,13 @@ public class MatchingEngine {
         }
     }
 
-
+    /**
+     * Berechnung einens neuen PF
+     * @param srcNode Ursprungsknoten
+     * @param dstNode Zielknoten
+     * @param currentPF aktueller PF
+     * @return currentPF++, wenn nötig. Sonst currentPF
+     */
     private int computeNewPF(Node srcNode, Node dstNode, int currentPF){
         if(!(dstNode instanceof Subject)){
             return currentPF;

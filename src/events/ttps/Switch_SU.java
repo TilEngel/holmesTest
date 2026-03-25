@@ -37,7 +37,7 @@ public class Switch_SU extends TTP {
     }
 
     @Override
-    public boolean matches(Edge edge, ProvGraph graph){
+    public boolean matchesOld(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_CHANGE_PRINCIPAL.toString())){
             return false;
         }
@@ -49,7 +49,7 @@ public class Switch_SU extends TTP {
     }
 
     @Override
-    public boolean matchesSimple(Edge edge, ProvGraph graph){
+    public boolean matches(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_CHANGE_PRINCIPAL.toString())){
             return false;
         }

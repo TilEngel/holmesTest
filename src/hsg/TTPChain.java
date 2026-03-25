@@ -1,7 +1,5 @@
 package hsg;
 
-import events.ttps.TTP;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

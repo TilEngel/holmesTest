@@ -24,7 +24,7 @@ public class Make_Mem_Exec extends TTP {
     }
 
     @Override
-    public boolean matches(Edge edge, ProvGraph  graph){
+    public boolean matchesOld(Edge edge, ProvGraph  graph){
 
         //Event muss MODIFY_PROCESS sein
         if(!edge.getOperation().equals(EventType.Type.EVENT_MODIFY_PROCESS.toString())){
@@ -40,7 +40,7 @@ public class Make_Mem_Exec extends TTP {
     }
 
     @Override
-    public boolean matchesSimple(Edge edge, ProvGraph  graph){
+    public boolean matches(Edge edge, ProvGraph  graph){
 
         //Event muss MODIFY_PROCESS sein
         if(!edge.getOperation().equals(EventType.Type.EVENT_MODIFY_PROCESS.toString())){

@@ -30,7 +30,7 @@ public class CnC extends TTP{
         ));
     }
     @Override
-    public boolean matches(Edge edge, ProvGraph graph){
+    public boolean matchesOld(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_SENDTO.toString())){
             return false;
         }
@@ -42,7 +42,7 @@ public class CnC extends TTP{
     }
 
     @Override
-    public boolean matchesSimple(Edge edge, ProvGraph graph){
+    public boolean matches(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_SENDTO.toString())){
             return false;
         }
