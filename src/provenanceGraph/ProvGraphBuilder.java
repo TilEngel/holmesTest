@@ -3,6 +3,7 @@ package provenanceGraph;
 import Database.Graph.*;
 import Database.*;
 import events.ttps.*;
+import hsg.HSGBuilder;
 import hsg.MatchingEngine;
 import hsg.PathFactorEngine;
 
@@ -110,9 +111,10 @@ public class ProvGraphBuilder {
      */
     private void collectEvents(){
         List<Map<String,Object>> rows = engine.getAllEvents();
-        int skipped =0;
+        int count =0;
 
         for (Map<String,Object> row:rows ){
+            count++;
             String srcId = (String) row.get("src_node");
             String dstId = (String) row.get("dst_node");
             //jwlg. Knoten-Instanzen aus NodeIndex holen
@@ -121,7 +123,6 @@ public class ProvGraphBuilder {
 
             // falls einer der Knoten nicht im Zeitfenster liegt
             if(srcNode == null || dstNode == null){
-                skipped++;
                 continue;
             }
             String eventUuid = (String) row.get("event_uuid");
@@ -133,7 +134,7 @@ public class ProvGraphBuilder {
 
             graph.addEdge(e);
         }
-        System.out.println("[INFO] Edges geladen  | skipped: "+ skipped);
+        System.out.println("[INFO] "+ count + " Edges geladen");
     }
 
 
@@ -141,7 +142,7 @@ public class ProvGraphBuilder {
     public void printEdges() {
         MatchingEngine engine = new MatchingEngine(graph);
         PathFactorEngine pf = new PathFactorEngine(graph);
-        List<TTP> initialCompromise = List.of(new Untrusted_Read());
+        List<TTP> initialCompromise1 = List.of(new Untrusted_Read());
         //Auch Initial_Compromise, aber setzen Untrusted_Read voraus
         List<TTP> initialCompromise2 = List.of(new Make_Mem_Exec(pf), new Untrusted_File_Exec(pf));
         List<TTP> establishFoothold = List.of(new Shell_Exec(pf), new CnC(pf));
@@ -149,9 +150,12 @@ public class ProvGraphBuilder {
         List<TTP> internalRecon = List.of(new Sensitive_Command(pf));
         List<TTP> cleanupTracks = List.of(new Sensitive_Temp_RM(pf), new Clear_Logs(pf));
         engine.matchTTPs(List.of(
-                initialCompromise, initialCompromise2, establishFoothold,
+                initialCompromise1, initialCompromise2, establishFoothold,
                 privilegeEscalation, internalRecon, cleanupTracks
         ));
+
+        HSGBuilder hsgBuilder = new HSGBuilder(graph);
+        hsgBuilder.constructHSG();
         System.out.println("[INFO] Testmethode printEdges() beendet");
     }
 
@@ -168,5 +172,9 @@ public class ProvGraphBuilder {
         if(obj instanceof Integer) return ((Integer)obj).longValue();
         if(obj instanceof String) return Long.parseLong((String)obj);
         throw new IllegalArgumentException("[ERR] toLong nicht möglich: "+obj);
+    }
+
+    public ProvGraph getGraph( ){
+        return graph;
     }
 }

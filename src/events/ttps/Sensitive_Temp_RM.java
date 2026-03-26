@@ -30,7 +30,7 @@ public class Sensitive_Temp_RM extends TTP {
     }
 
     @Override
-    public  boolean matches(Edge edge, ProvGraph graph){
+    public  boolean matchesOld(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_UNLINK.toString())){
             return false;
         }
@@ -39,6 +39,17 @@ public class Sensitive_Temp_RM extends TTP {
         }
         return hasInitialCompromiseAncestor(edge.getSrcNode(), graph)
                 && hasInternalReconAncestor(edge.getDstNode(), graph);
+    }
+
+    @Override
+    public  boolean matches(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_UNLINK.toString())){
+            return false;
+        }
+        if(!prerequisitesMet(edge, graph)){
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.util.Set;
 public class Untrusted_Read extends TTP {
 
     private static final Set<String> TRUSTED_IPS = Set.of(
-            "10.0.67.23" //z.B
+            "128.55.12.10" //z.B
     );
 
     public Untrusted_Read(){
@@ -32,6 +32,14 @@ public class Untrusted_Read extends TTP {
                     return !TRUSTED_IPS.contains(n.getDstAddr());
                 }
         ));
+    }
+
+    @Override
+    public boolean matchesOld(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_RECVFROM.toString())){
+            return false;
+        }
+        return prerequisitesMet(edge, graph);
     }
 
     @Override

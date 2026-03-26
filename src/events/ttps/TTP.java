@@ -11,7 +11,7 @@ import provenanceGraph.ProvGraph;
 
 
 public abstract class TTP {
-    static final int PF_THRESHOLD = 2;
+    public static final int PF_THRESHOLD = 3;
 
     private char severity;
 
@@ -20,6 +20,23 @@ public abstract class TTP {
     private List<Prerequisite> prerequisites;
     static PathFactorEngine pfEngine; //"singleton" PFEngine -> ressourcenschonend
 
+    /**
+     * Prüft, ob alle Bedingungen für das TTP gelten.
+     * Sehr ineffizient, da unnötig viele PF-Berechnungen durchgeführt werden.
+     * Will mich noch nicht final davon trennen.
+     * @param edge Kante
+     * @param graph Provenance-Graph
+     * @return true, wenn Verhalten festgestellt wird
+     */
+    public abstract boolean matchesOld(Edge edge, ProvGraph graph);
+
+    /**
+     * Prüft, ob das Geschehen an den Knoten einer Kante zu dem entsprechenden
+     * TTP passt
+     * @param edge Zu untersuchende Kante
+     * @param graph Provenance-Graph
+     * @return true, wenn TTP erkannt wird
+     */
     public abstract boolean matches(Edge edge, ProvGraph graph);
 
     //gibt TTP-Name zurück, welcher in Node.ttps gespeichert wird
@@ -44,6 +61,8 @@ public abstract class TTP {
     /**
      * Prüft, ob der Knoten nach einem potenziellen
      * Initial Compromise folgt, unter Prüfung des PFs
+     *
+     * Wird nur von matchesOld() verwendet
      * @param target Zielknoten
      * @param graph Provenance-Graph
      * @return true, wenn Bedingung erfüllt, false sonst
@@ -63,6 +82,15 @@ public abstract class TTP {
         return false;
     }
 
+    /**
+     * Prüft, ob ein Internal_Recon mit
+     * PathFactor<= PF_THRESHOLD existiert.
+     *
+     * Wird nur von matchesOld() verwendet
+     * @param target Zielknoten
+     * @param graph Provenance-Graph
+     * @return true, wenn Bedingungen erfüllt, false, wenn nict
+     */
     boolean hasInternalReconAncestor(Node target, ProvGraph graph){
         Sensitive_Command sc = new Sensitive_Command(pfEngine);
 
@@ -79,7 +107,9 @@ public abstract class TTP {
 
     /**
      * Prüft, ob ein Untrusted Read mit
-     * PathFactor<= PF_THRESHOLD existiert
+     * PathFactor<= PF_THRESHOLD existiert.
+     *
+     * Wird nur von matchesOld() verwendet
      * @param target Zielknoten
      * @param graph Provenance-Graph
      * @return true, wenn Bedingungen erfüllt, false, wenn nict

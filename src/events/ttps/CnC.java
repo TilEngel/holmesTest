@@ -30,7 +30,7 @@ public class CnC extends TTP{
         ));
     }
     @Override
-    public boolean matches(Edge edge, ProvGraph graph){
+    public boolean matchesOld(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_SENDTO.toString())){
             return false;
         }
@@ -39,6 +39,18 @@ public class CnC extends TTP{
         }
         //hier srcNode prüfen, weil der Prozess ist
         return hasInitialCompromiseAncestor(edge.getSrcNode(),graph);
+    }
+
+    @Override
+    public boolean matches(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_SENDTO.toString())){
+            return false;
+        }
+        if(!prerequisitesMet(edge,graph)){
+            return false;
+        }
+        //hier srcNode prüfen, weil der Prozess ist
+        return true;
     }
 
     @Override

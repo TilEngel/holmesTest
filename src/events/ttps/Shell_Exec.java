@@ -44,7 +44,7 @@ public class Shell_Exec extends TTP {
     }
 
     @Override
-    public boolean matches(Edge edge, ProvGraph graph){
+    public boolean matchesOld(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_EXECUTE.toString())){
             return false;
         }
@@ -52,6 +52,17 @@ public class Shell_Exec extends TTP {
             return false;
         }
         return hasInitialCompromiseAncestor(edge.getDstNode(), graph);
+    }
+
+    @Override
+    public boolean matches(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_EXECUTE.toString())){
+            return false;
+        }
+        if(!prerequisitesMet(edge, graph)){
+            return false;
+        }
+        return true;
     }
 
 

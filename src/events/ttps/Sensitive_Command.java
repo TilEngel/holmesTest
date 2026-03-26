@@ -42,7 +42,7 @@ public class Sensitive_Command extends TTP {
     }
 
     @Override
-    public boolean matches(Edge edge, ProvGraph graph){
+    public boolean matchesOld(Edge edge, ProvGraph graph){
         if(!edge.getOperation().equals(EventType.Type.EVENT_FORK.toString())){
             return false;
         }
@@ -50,6 +50,17 @@ public class Sensitive_Command extends TTP {
             return false;
         }
         return hasInitialCompromiseAncestor(edge.getSrcNode(), graph);
+    }
+
+    @Override
+    public boolean matches(Edge edge, ProvGraph graph){
+        if(!edge.getOperation().equals(EventType.Type.EVENT_FORK.toString())){
+            return false;
+        }
+        if(!prerequisitesMet(edge,graph)){
+            return false;
+        }
+        return true;
     }
 
     @Override

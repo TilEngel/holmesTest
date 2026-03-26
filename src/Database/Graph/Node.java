@@ -1,9 +1,9 @@
 package Database.Graph;
 
 import events.ttps.TTP;
+import hsg.TTPChain;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Node {
     private String uuid;
@@ -12,6 +12,7 @@ public abstract class Node {
     private String hashId;
 
     private final Set<String> ttps = new HashSet<>();
+    private final List<TTPChain> chains = new ArrayList<>();
 
     public Node(String uuid, long nodeIndex, String hashId) {
         setNodeIndex(nodeIndex);
@@ -57,7 +58,30 @@ public abstract class Node {
     public boolean hasMatchedTTP(TTP ttp){
         return ttps.contains(ttp.getName());
     }
+    public Set<String> getTtps(){
+        return ttps;
+    }
+    public void addChain(TTPChain chain){
+        chains.add(chain);
+    }
 
+    public List<TTPChain> getChains() {
+        return Collections.unmodifiableList(chains);
+    }
+
+    /**
+     * Prüft, ob identische Chain bereits vorhanden ist
+     * @param chain TTPChain
+     * @return true, wenn bereits vorhanden
+     */
+    public boolean hasChain(TTPChain chain){
+        for(TTPChain c: chains){
+            if(chain.isDuplicateOf(c)){
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Liefert den Namen des Knotens, je nach Art unterschiedlich
      * (Subject: Name des Commands , File: Pfadname, Netflow: Source Port)

@@ -8,6 +8,10 @@ import provenanceGraph.ProvGraph;
 import java.util.*;
 
 /**
+ * VERALTET
+ * WIRD (stand jetzt) NICHT VERWENDET.
+ * Komplexere PF-Berechnung mit caching, aber nicht effizient
+ *
  * Klasse für PathFactor-Aufgaben
  * "Online"-Version, wenn stetig neue Kanten kommen vllt deutlich aufwändiger (erweitern, wenn Zeit?)
  */
