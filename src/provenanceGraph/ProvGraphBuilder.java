@@ -154,7 +154,7 @@ public class ProvGraphBuilder {
                 privilegeEscalation, internalRecon, cleanupTracks
         ));
 
-        HSGBuilder hsgBuilder = new HSGBuilder(graph, pf);
+        HSGBuilder hsgBuilder = new HSGBuilder(graph);
         hsgBuilder.constructHSG();
         System.out.println("[INFO] Testmethode printEdges() beendet");
     }

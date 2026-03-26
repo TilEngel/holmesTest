@@ -36,7 +36,7 @@ public class MatchingEngine {
                     TTPChain newChain = new TTPChain(ttp.getName(), match.getHashId());
                     match.addChain(newChain);
                     match.addTTP(ttp);
-                    System.out.println("[NEW CHAIN] "+ ttp.getName()+ " auf "+ match.getName());
+                    System.out.println("[INFO] New Chain "+ ttp.getName()+ " auf "+ match.getName());
 
                 }
             }
@@ -76,7 +76,7 @@ public class MatchingEngine {
                                                 if(!dstNode.hasChain(extend)) {
                                                     dstNode.addChain(extend);
                                                     dstNode.addTTP(ttp);
-                                                    System.out.println("[CHAIN EXTENDED] " + extend + " auf " + dstNode.getName());
+                                                    System.out.println("--[INFO] Chain erweitert" + extend + " auf " + dstNode.getName());
                                                 }
                                             }
                                         }

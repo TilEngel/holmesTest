@@ -1,3 +1,4 @@
+import Database.Graph.Node;
 import Database.JDBCEngine;
 import events.ttps.*;
 import hsg.HSGBuilder;
@@ -8,6 +9,7 @@ import provenanceGraph.ProvGraphBuilder;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -37,12 +39,14 @@ public class Main {
         List<TTP> internalRecon = List.of(new Sensitive_Command(pf));
         List<TTP> cleanupTracks = List.of(new Sensitive_Temp_RM(pf), new Clear_Logs(pf));
 
+        System.out.println("[INFO] Szenarien werden erkannt. Das kann wenige Minuten dauern...");
         MEngine.matchTTPs(List.of(
                 initialCompromise1, initialCompromise2, establishFoothold,
                 privilegeEscalation, internalRecon, cleanupTracks
         ));
 
-        HSGBuilder hsgBuilder = new HSGBuilder(graph, pf);
-        hsgBuilder.constructHSG();
+        HSGBuilder hsgBuilder = new HSGBuilder(graph);
+        Map<String,List<Node>> hsgs = hsgBuilder.constructHSG();
+        hsgBuilder.printScenarios(hsgs);
     }
 }

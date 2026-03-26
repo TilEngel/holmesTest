@@ -1,7 +1,6 @@
 package hsg;
 
 import Database.Graph.Node;
-import events.ttps.TTP;
 import provenanceGraph.ProvGraph;
 
 import java.util.*;
@@ -12,26 +11,23 @@ import java.util.*;
  */
 public class HSGBuilder {
     private final ProvGraph graph;
-    private final PathFactorEngine pfEngine;
 
-    private final Map<String, Set<String>> hsgEdges = new HashMap<>();
-    private final Map<String,Set<String>> incomingEdges = new HashMap<>();
-    private final Map<String, Node> hsgNodes = new HashMap<>();
-
-    public HSGBuilder(ProvGraph graph, PathFactorEngine pfEngine){
+    public HSGBuilder(ProvGraph graph){
         this.graph = graph;
-        this.pfEngine = pfEngine;
     }
 
     /**
      * Sammelt alle Knoten, an denen TTPs gefunden wurden.
      * Verbindet sie unter Berücksichtigung des PathFactors.
      * Gibt Verbindungen auf Konsole aus.
+     * @return Sammlung an Szenarien (HSGs)
      */
-    public void constructHSG(){
+    public Map<String,List<Node>> constructHSG(){
+
         Map<String, List<Node>> scenarios = new HashMap<>();
 
         for(Node node: graph.getNodes().values()){
+            //Für jede Kette aller Knoten
             for(TTPChain chain: node.getChains()){
                 String origin = chain.getOriginId();
                 if(!scenarios.containsKey(origin)){
@@ -42,10 +38,14 @@ public class HSGBuilder {
                 }
             }
         }
-        //Ausgabe
-        printScenarios(scenarios);
+
+        return scenarios;
     }
 
+    /**
+     * Gibt alle Szenarien aus
+     * @param scenarios Auszugebene Szenarien
+     */
     public void printScenarios(Map<String,List<Node>> scenarios) {
         int count = 0;
         for (Map.Entry<String, List<Node>> entry : scenarios.entrySet()) {
