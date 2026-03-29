@@ -51,6 +51,6 @@ public class Main {
 
         ScoringEngine sEngine = new ScoringEngine(hsgs);
         List<Map.Entry<Double,List<Node>>> rankedSzenarios = sEngine.scoreSzenarios();
-        hsgBuilder.printScenarios(hsgs); //print anpassen an rankedSzenarios
+        hsgBuilder.printRankedScenarios(rankedSzenarios);
     }
 }

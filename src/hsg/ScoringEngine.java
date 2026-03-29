@@ -8,13 +8,17 @@ import java.util.*;
 import static java.lang.Math.pow;
 
 public class ScoringEngine {
-    private static final int ALARM_THRESHOLD = 100;
+    public static final int ALARM_THRESHOLD = 100;
     Map<String, List<Node>> scenarios;
 
     public ScoringEngine(Map<String,List<Node>> scenarios){
         this.scenarios =scenarios;
     }
 
+    /**
+     * Liefert sortierte Liste der Szenarien mit ihren Threat-Scores
+     * @return Bewertete Szenarien
+     */
     public List<Map.Entry<Double,List<Node>>> scoreSzenarios(){
         List<Map.Entry<Double,List<Node>>> rankedScenarios = new ArrayList<>(); //Sortierte Liste mit Scores und Szenarien
 
@@ -28,10 +32,16 @@ public class ScoringEngine {
                 System.out.println("[ALARM] GRENZWERT ÜBERSCHRITTEN!! --------");
             }
         }
+        //Nach Score (DESC) sortieren
         rankedScenarios.sort((a,b) -> Double.compare(b.getKey(),a.getKey() ));
         return  rankedScenarios;
     }
 
+    /**
+     * Berechnet Threat-Score eines Scenarios
+     * @param involved Szenario
+     * @return Score
+     */
     private double computeScore(List<Node> involved){
         double score = 1.0;
         for(int i= 0; i< involved.size(); i++){
@@ -42,7 +52,12 @@ public class ScoringEngine {
         return  score;
     }
 
-    //falls mehrere TTPs pro Phase
+    /**
+     * Liefert höchsten Severity-Value
+     * (mehrere TTPs pro Phase möglich)
+     * @param node
+     * @return
+     */
     private int getHighestSeverityValue(Node node){
         int highest = 0;
         for(TTP ttp : node.getTTPObjects()){
@@ -54,7 +69,12 @@ public class ScoringEngine {
         return highest;
     }
 
-    // Über so eine Methode, damit Werte zentral festgelegt
+    /**
+     * Liefert numerischen Wert für Severities
+     * (über so eine Methode, damit Werte zentral änderbar sind)
+     * @param ttp entsprechendes TTP
+     * @return Severity-Wert
+     */
     private int getSeverityValue(TTP ttp){
         char severity = ttp.getSeverity();
 

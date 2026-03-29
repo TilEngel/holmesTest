@@ -57,10 +57,45 @@ public class HSGBuilder {
             System.out.println("Ursprung: " + origin.getName());
             System.out.println("Beteiligte Knoten: " + involved.size());
 
+            //TTPs
             Set<String> allTTPs = new LinkedHashSet<>();
             for (Node n : involved) {
                 for (TTPChain chain : n.getChains()) {
                     if (chain.getOriginId().equals(entry.getKey())) {
+                        allTTPs.addAll(chain.getTtps());
+                    }
+                }
+            }
+            System.out.println("TTP-Kette: " + allTTPs);
+        }
+    }
+
+
+    /**
+     * Gibt die Szenarien sortiert nach Threat-Score mit Threat-Score aus
+     * @param rankedScenarios Bewertete Szenarien (durch ScoringEngine.scoreScenarios)
+     */
+    public void printRankedScenarios(List<Map.Entry<Double,List<Node>>> rankedScenarios){
+        System.out.println("\n++Szenarien (Sortiert absteigend nach Bedrohlichkeit)++ \n");
+        int count = 0;
+        for (Map.Entry<Double, List<Node>> entry : rankedScenarios) {
+            count++;
+            List<Node> involved = entry.getValue();
+            double score = entry.getKey();
+            String origin = involved.get(0).getChains().get(0).getOriginId();
+
+            System.out.println("\n Szenario " + count);
+            System.out.println("Threat-Score: " + score);
+            if(score >= ScoringEngine.ALARM_THRESHOLD){
+                System.out.println("\nGEFAHR\n");
+            }
+            System.out.println("Beteiligte Knoten: " + involved.size());
+
+            //TTPs des Szenarios sammeln
+            Set<String> allTTPs = new LinkedHashSet<>();
+            for (Node n : involved) {
+                for (TTPChain chain : n.getChains()) {
+                    if (chain.getOriginId().equals(origin)) {
                         allTTPs.addAll(chain.getTtps());
                     }
                 }
