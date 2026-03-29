@@ -55,4 +55,10 @@ public class Untrusted_File_Exec extends TTP{
     public String getName(){
         return "untrusted_file_exec";
     }
+
+    @Override
+    public String getPhase(){
+        return "initial_compromise";
+    }
+
 }

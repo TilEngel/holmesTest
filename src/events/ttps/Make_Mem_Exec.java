@@ -59,4 +59,8 @@ public class Make_Mem_Exec extends TTP {
     public String getName(){
         return "make_mem_exec";
     }
+    @Override
+    public String getPhase(){
+        return "initial_compromise";
+    }
 }

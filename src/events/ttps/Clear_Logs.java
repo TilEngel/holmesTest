@@ -74,4 +74,9 @@ public class Clear_Logs extends TTP{
     public String getName(){
         return "clear_logs";
     }
+
+    @Override
+    public String getPhase(){
+        return "cleanup_tracks";
+    }
 }

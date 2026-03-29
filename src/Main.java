@@ -4,6 +4,7 @@ import events.ttps.*;
 import hsg.HSGBuilder;
 import hsg.MatchingEngine;
 import hsg.PathFactorEngine;
+import hsg.ScoringEngine;
 import provenanceGraph.ProvGraph;
 import provenanceGraph.ProvGraphBuilder;
 
@@ -47,6 +48,9 @@ public class Main {
 
         HSGBuilder hsgBuilder = new HSGBuilder(graph);
         Map<String,List<Node>> hsgs = hsgBuilder.constructHSG();
-        hsgBuilder.printScenarios(hsgs);
+
+        ScoringEngine sEngine = new ScoringEngine(hsgs);
+        List<Map.Entry<Double,List<Node>>> rankedSzenarios = sEngine.scoreSzenarios();
+        hsgBuilder.printScenarios(hsgs); //print anpassen an rankedSzenarios
     }
 }

@@ -64,4 +64,10 @@ public class Switch_SU extends TTP {
     public String getName(){
         return "switch_su";
     }
+
+    @Override
+    public String getPhase(){
+        return "privilege_escalation";
+    }
+
 }

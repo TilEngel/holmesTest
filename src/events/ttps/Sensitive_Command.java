@@ -67,4 +67,8 @@ public class Sensitive_Command extends TTP {
     public String getName(){
         return "sensitive_command";
     }
+    @Override
+    public String getPhase(){
+        return "internal_recon";
+    }
 }

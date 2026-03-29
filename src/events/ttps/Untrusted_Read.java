@@ -54,4 +54,10 @@ public class Untrusted_Read extends TTP {
         return "untrusted_read";
     }
 
+    @Override
+    public String getPhase(){
+        return "initial_compromise";
+    }
+
+
 }

@@ -41,7 +41,7 @@ public abstract class TTP {
 
     //gibt TTP-Name zurück, welcher in Node.ttps gespeichert wird
     public abstract String getName();
-
+    public abstract String getPhase();
     /**
      * Prüft für alle Prärekonditionen des entsprechenden
      * TTPs, ob sie eingehalten werden
@@ -130,7 +130,7 @@ public abstract class TTP {
     EventType.Type getType(){
         return type;
     }
-    char getSeverity(){
+    public char getSeverity(){
         return severity;
     }
 
@@ -144,4 +144,5 @@ public abstract class TTP {
     protected void setPrerequisites(List<Prerequisite> prerequisites){
         this.prerequisites = prerequisites;
     }
+
 }

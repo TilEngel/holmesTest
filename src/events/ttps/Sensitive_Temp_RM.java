@@ -56,4 +56,10 @@ public class Sensitive_Temp_RM extends TTP {
     public String getName(){
         return "sensitive_temp_rm";
     }
+
+    @Override
+    public String getPhase(){
+        return "cleanup_tracks";
+    }
+
 }

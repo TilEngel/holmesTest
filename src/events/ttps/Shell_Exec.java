@@ -71,4 +71,10 @@ public class Shell_Exec extends TTP {
     public String getName(){
         return "shell_exec";
     }
+
+    @Override
+    public String getPhase(){
+        return "establish_foothold";
+    }
+
 }

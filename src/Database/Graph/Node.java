@@ -12,6 +12,7 @@ public abstract class Node {
     private String hashId;
 
     private final Set<String> ttps = new HashSet<>();
+    private final Set<TTP> ttpObjects  = new HashSet<>();
     private final List<TTPChain> chains = new ArrayList<>();
 
     public Node(String uuid, long nodeIndex, String hashId) {
@@ -48,6 +49,7 @@ public abstract class Node {
      */
     public void addTTP(TTP ttp){
         ttps.add(ttp.getName());
+        ttpObjects.add(ttp);
     }
 
     /**
@@ -89,4 +91,7 @@ public abstract class Node {
      * @return Name des Knotens
      */
     public abstract String getName();
+    public Set<TTP> getTTPObjects(){
+        return ttpObjects;
+    }
 }

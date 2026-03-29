@@ -57,4 +57,9 @@ public class CnC extends TTP{
     public String getName(){
         return "cnc";
     }
+
+    @Override
+    public String getPhase(){
+        return "establish_foothold";
+    }
 }
